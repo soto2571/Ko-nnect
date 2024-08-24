@@ -25,7 +25,7 @@ Technologies Used
 
 
 Setup and Installation:
-git clone git@github.com:soto2571/python-website.git
+`git clone git@github.com:soto2571/python-website.git`
 
 Create a Virtual Environment:
 python -m venv venv
