@@ -28,20 +28,20 @@ Setup and Installation:
 `git clone git@github.com:soto2571/python-website.git`
 
 Create a Virtual Environment:
-python -m venv venv
+`python -m venv venv`
 
 Install all dependecies:
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 Set Up Environment Variables:
 Create a .env file in the root directory and add the following:
-SECRET_KEY=HOLA
+`SECRET_KEY=HOLA`
 
 Run the Application:
-python main.py
+`python main.py`
 
 Access the Application:
-Open your browser and go to http://127.0.0.1:8080.
+`Open your browser and go to http://127.0.0.1:8080.`
 
 Usage
 
