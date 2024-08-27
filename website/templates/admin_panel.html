@@ -1,0 +1,84 @@
+{% extends "base.html" %} 
+
+{% block title %}Admin-Panel{% endblock %}
+
+{% block content %}
+    <!--Create new Schedule -->
+    <form method="POST" action="{{ url_for('admin.create_schedule') }}">
+        <h3 align="center">Create Schedule</h3>
+        <div class="form-group">
+            <label for="shift_start">Entry Hour</label>
+            <input type="datetime-local" class="form-control" id="shift_start" name="shift_start" required>
+        </div>
+        <div class="form-group">
+            <label for="shift_end">Exit Hour</label>
+            <input type="datetime-local" class="form-control" id="shift_end" name="shift_end" required>
+        </div>
+        <div class="form-group">
+            <label for="employee_id">Employee</label>
+            <select class="form-control" id="employee_id" name="employee_id" required>
+                {% for employee in employees %}
+                    <option value="{{ employee.id }}">{{ employee.first_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <br />
+
+    <!-- Create New User Form -->
+    <form method="POST" action="{{ url_for('admin.create_user') }}">
+        <h3 align="center">Create New User</h3>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+        </div>
+        <div class="form-group">
+            <label for="first_name">First Name</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+        </div>
+        <div class="form-group">
+            <label for="password_confirm">Password (Confirm)</label>
+            <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm password" required>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <!-- Create New User Form -->
+    <h3 align="center">Employee List & Schedules</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Email</th>
+                <th>Shift Start</th>
+                <th>Shift End</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.first_name }}</td>
+                <td>{{ employee.email }}</td>
+                <td>
+                    {% for schedule in schedules if schedule.employee_id == employee.id %}
+                        {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for schedule in schedules if schedule.employee_id == employee.id %}
+                        {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
