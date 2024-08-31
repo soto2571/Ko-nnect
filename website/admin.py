@@ -27,6 +27,7 @@ def create_user():
     first_name = request.form.get('first_name')
     password = request.form.get('password')
     password_confirm = request.form.get('password_confirm')
+    availability = request.form.get('availability')
     
     if not email or not first_name or not password or not password_confirm:
         flash("All fields are required!")
@@ -42,7 +43,7 @@ def create_user():
         return redirect(url_for('admin.admin_panel'))
     
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
-    new_user = User(email=email, first_name=first_name, password=hashed_password, is_admin=False)
+    new_user = User(email=email, first_name=first_name, password=hashed_password, is_admin=False, availability=availability)
     
     try:
         db.session.add(new_user)
