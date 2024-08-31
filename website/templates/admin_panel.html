@@ -77,6 +77,18 @@
                         {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}<br>
                     {% endfor %}
                 </td>
+                <td>
+                    <!-- Delete Employee Button -->
+                    <form method="POST" action="{{ url_for('admin.delete_employee', id=employee.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete Employee</button>
+                    </form>
+                    <!-- Delete Schedule Buttons -->
+                    {% for schedule in schedules if schedule.employee_id == employee.id %}
+                    <form method="POST" action="{{ url_for('admin.delete_schedule', id=schedule.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-warning btn-sm">Delete Schedule</button>
+                    </form>
+                    {% endfor %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>

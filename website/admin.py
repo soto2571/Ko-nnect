@@ -90,3 +90,37 @@ def create_schedule():
         flash(f"An error occurred: {e}", category='error')
 
     return redirect(url_for('admin.admin_panel'))
+
+@admin.route('/delete_schedule/<int:id>', methods=["POST"])
+@login_required
+def delete_schedule(id):
+    if not current_user.is_admin:
+        return redirect(url_for('home'))
+    
+    schedule = Schedule.query.get_or_404(id) # ???
+    try:
+        db.session.delete(schedule) 
+        db.session.commit()
+        flash("Schedule deleted succesfully!", category='success')
+    except Exception as e:
+        db.session.rollback() # ???
+        flash(f"An error ocurred while deleting the schedule: {e}", category='error')
+
+    return redirect(url_for('admin.admin_panel'))
+
+@admin.route('/delete_employee/<int:id>', methods=["POST"])
+@login_required
+def delete_employee(id):
+    if not current_user.is_admin:
+        return redirect(url_for('home'))
+    
+    employee = User.query.get_or_404(id) # ???
+    try:
+        db.session.delete(employee)
+        db.session.commit()
+        flash("Employee deleted succesfully!", category='success')
+    except Exception as e:
+        db.session.rollback() # ???
+        flash(f"An error occurred while deleting the employee: {e}", category='error')
+   
+    return redirect(url_for('admin.admin_panel'))
