@@ -10,6 +10,8 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     is_admin = db.Column(db.Boolean, default=False)
 
+    availability = db.Column(db.String(500))
+
     schedules = db.relationship('Schedule', foreign_keys='Schedule.employee_id', backref='employee', cascade='all, delete-orphan')
     created_schedules = db.relationship('Schedule', foreign_keys='Schedule.created_by', backref='creator', cascade='all, delete-orphan')
     vacation_hours = db.relationship('VacationHours', foreign_keys='VacationHours.employee_id', backref='employee', cascade='all, delete-orphan')

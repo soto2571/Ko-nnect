@@ -47,19 +47,24 @@
             <label for="password_confirm">Password (Confirm)</label>
             <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm password" required>
         </div>
+        <div class="form-group">
+            <label for="availability">Availability</label>
+            <input type="text" class="form-control" id="availability" name="availability" placeholder="e.g., Mon-Fri, 9am-5pm">
+        </div>
         <br />
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <!-- Create New User Form -->
     <h3 align="center">Employee List & Schedules</h3>
     <table class="table">
         <thead>
             <tr>
                 <th>Employee Name</th>
                 <th>Email</th>
+                <th>Availability</th> <!-- New Column for Availability -->
                 <th>Shift Start</th>
                 <th>Shift End</th>
+                <th>Actions</th> <!-- New Column for Actions (Delete) -->
             </tr>
         </thead>
         <tbody>
@@ -67,6 +72,7 @@
             <tr>
                 <td>{{ employee.first_name }}</td>
                 <td>{{ employee.email }}</td>
+                <td>{{ employee.availability }}</td> <!-- Display Availability -->
                 <td>
                     {% for schedule in schedules if schedule.employee_id == employee.id %}
                         {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}<br>
