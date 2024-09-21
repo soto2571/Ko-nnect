@@ -10,6 +10,11 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     is_admin = db.Column(db.Boolean, default=False)
 
+    opening_time = db.Column(db.Time, nullable=True)
+    closing_time = db.Column(db.Time, nullable=True)
+    business_days = db.Column(db.String(20), nullable=True)
+
+    created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     availability = db.Column(db.String(500))
 
     schedules = db.relationship('Schedule', foreign_keys='Schedule.employee_id', backref='employee', cascade='all, delete-orphan')
