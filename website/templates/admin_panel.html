@@ -1,102 +1,219 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block title %}Admin-Panel{% endblock %}
 
 {% block content %}
-    <!--Create new Schedule -->
-    <form method="POST" action="{{ url_for('admin.create_schedule') }}">
-        <h3 align="center">Create Schedule</h3>
-        <div class="form-group">
-            <label for="shift_start">Entry Hour</label>
-            <input type="datetime-local" class="form-control" id="shift_start" name="shift_start" required>
-        </div>
-        <div class="form-group">
-            <label for="shift_end">Exit Hour</label>
-            <input type="datetime-local" class="form-control" id="shift_end" name="shift_end" required>
-        </div>
-        <div class="form-group">
-            <label for="employee_id">Employee</label>
-            <select class="form-control" id="employee_id" name="employee_id" required>
-                {% for employee in employees %}
-                    <option value="{{ employee.id }}">{{ employee.first_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<form method="POST" action="{{ url_for('admin.set_business_hours') }}">
+    <h3 align="center">Set Business Hours and Days</h3>
+    
+    <div class="form-group">
+        <label for="opening_time">Opening Time</label>
+        <input type="time" class="form-control" id="opening_time" name="opening_time" required>
+    </div>
+    <div class="form-group">
+        <label for="closing_time">Closing Time</label>
+        <input type="time" class="form-control" id="closing_time" name="closing_time" required>
+    </div>
 
-    <br />
+    <div class="form-group">
+        <label>Business Days:</label><br>
+        <label><input type="checkbox" name="business_days" value="0"> Monday</label><br>
+        <label><input type="checkbox" name="business_days" value="1"> Tuesday</label><br>
+        <label><input type="checkbox" name="business_days" value="2"> Wednesday</label><br>
+        <label><input type="checkbox" name="business_days" value="3"> Thursday</label><br>
+        <label><input type="checkbox" name="business_days" value="4"> Friday</label><br>
+        <label><input type="checkbox" name="business_days" value="5"> Saturday</label><br>
+        <label><input type="checkbox" name="business_days" value="6"> Sunday</label><br>
+    </div>
 
-    <!-- Create New User Form -->
-    <form method="POST" action="{{ url_for('admin.create_user') }}">
-        <h3 align="center">Create New User</h3>
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-        </div>
-        <div class="form-group">
-            <label for="first_name">First Name</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-        </div>
-        <div class="form-group">
-            <label for="password_confirm">Password (Confirm)</label>
-            <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm password" required>
-        </div>
-        <div class="form-group">
-            <label for="availability">Availability</label>
-            <input type="text" class="form-control" id="availability" name="availability" placeholder="e.g., Mon-Fri, 9am-5pm">
-        </div>
-        <br />
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-    <h3 align="center">Employee List & Schedules</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Employee Name</th>
-                <th>Email</th>
-                <th>Availability</th> <!-- New Column for Availability -->
-                <th>Shift Start</th>
-                <th>Shift End</th>
-                <th>Actions</th> <!-- New Column for Actions (Delete) -->
-            </tr>
-        </thead>
-        <tbody>
+<!-- Create new Schedule -->
+<form method="POST" action="{{ url_for('admin.create_schedule') }}">
+    <h3 align="center">Create Schedule</h3>
+    <div class="form-group">
+        <label for="shift_start">Entry Hour</label>
+        <input type="datetime-local" class="form-control" id="shift_start" name="shift_start" required>
+    </div>
+    <div class="form-group">
+        <label for="shift_end">Exit Hour</label>
+        <input type="datetime-local" class="form-control" id="shift_end" name="shift_end" required>
+    </div>
+    <div class="form-group">
+        <label for="employee_id">Employee</label>
+        <select class="form-control" id="employee_id" name="employee_id" required>
             {% for employee in employees %}
-            <tr>
-                <td>{{ employee.first_name }}</td>
-                <td>{{ employee.email }}</td>
-                <td>{{ employee.availability }}</td> <!-- Display Availability -->
-                <td>
-                    {% for schedule in schedules if schedule.employee_id == employee.id %}
-                        {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for schedule in schedules if schedule.employee_id == employee.id %}
-                        {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    <!-- Delete Employee Button -->
-                    <form method="POST" action="{{ url_for('admin.delete_employee', id=employee.id) }}" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete Employee</button>
-                    </form>
-                    <!-- Delete Schedule Buttons -->
-                    {% for schedule in schedules if schedule.employee_id == employee.id %}
-                    <form method="POST" action="{{ url_for('admin.delete_schedule', id=schedule.id) }}" style="display:inline;">
-                        <button type="submit" class="btn btn-warning btn-sm">Delete Schedule</button>
-                    </form>
-                    {% endfor %}
-                </td>
-            </tr>
+                <option value="{{ employee.id }}">{{ employee.first_name }}</option>
             {% endfor %}
-        </tbody>
-    </table>
+        </select>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<br />
+
+<!-- Create New User Form -->
+<form method="POST" action="{{ url_for('admin.create_user') }}">
+    <h3 align="center">Create New User</h3>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+    </div>
+    <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name" required>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+    </div>
+    <div class="form-group">
+        <label for="password_confirm">Password (Confirm)</label>
+        <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Confirm password" required>
+    </div>
+    <div class="form-group">
+        <label for="availability">Availability</label>
+        <input type="text" class="form-control" id="availability" name="availability" placeholder="e.g., Mon-Fri, 9am-5pm">
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<h3>Business Hours</h3>
+<p>Opening Time: {{ user.opening_time }}</p>
+<p>Closing Time: {{ user.closing_time }}</p>
+<p>Business Days: 
+    {% if user.business_days %}
+        {% set business_days = user.business_days.split(',') %}
+        {% set business_days_names = [] %}
+        {% for day in business_days %}
+            {% set _ = business_days_names.append(business_days_list[day|int]) %}
+        {% endfor %}
+        {{ ', '.join(business_days_names) }}
+    {% else %}
+        Not Set
+    {% endif %}
+</p>
+
+<h3 align="center">Employee List & Schedules</h3>
+<div class="employee-schedule-container">
+    {% for employee in employees %}
+        <div class="employee-card">
+            <h4>{{ employee.first_name }}</h4>
+            <p><strong>Email:</strong> {{ employee.email }}</p>
+            <p><strong>Availability:</strong> {{ employee.availability }}</p>
+            <div class="schedule-boxes">
+                {% for schedule in schedules if schedule.employee_id == employee.id %}
+                    <div class="schedule-box">
+                        <p><strong>Start:</strong> {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <p><strong>End:</strong> {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <button class="edit-btn btn btn-warning btn-sm"
+                                data-schedule-id="{{ schedule.id }}"
+                                data-shift-start="{{ schedule.shift_start.strftime('%Y-%m-%dT%H:%M') }}"
+                                data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
+                            Edit
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="employee-actions">
+                <!-- Generate Automated Schedule for this employee -->
+                <form method="POST" action="{{ url_for('admin.generate_schedule', employee_id=employee.id, duration=2) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-success btn-sm">Generate 2-Week Schedule</button>
+                </form>
+                
+                <!-- Delete Employee Button -->
+                <form method="POST" action="{{ url_for('admin.delete_employee', id=employee.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete Employee</button>
+                </form>
+                
+                <!-- Delete Schedule Buttons -->
+                {% for schedule in schedules if schedule.employee_id == employee.id %}
+                <form method="POST" action="{{ url_for('admin.delete_schedule', id=schedule.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-warning btn-sm">Delete Schedule</button>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Modal for Editing Schedule -->
+<div id="editScheduleModal" style="display: none;">
+    <div class="modal-content">
+        <h3>Edit Schedule</h3>
+        <form id="editScheduleForm">
+            <input type="hidden" id="schedule_id" name="schedule_id">
+            
+            <div class="form-group">
+                <label for="edit_shift_start">Entry Hour</label>
+                <input type="datetime-local" class="form-control" id="edit_shift_start" name="shift_start" required>
+            </div>
+            <div class="form-group">
+                <label for="edit_shift_end">Exit Hour</label>
+                <input type="datetime-local" class="form-control" id="edit_shift_end" name="shift_end" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('editScheduleModal').style.display='none'">Cancel</button>
+        </form>
+    </div>
+</div>
+
+
+
+<!-- Include CSS for better presentation -->
+<style>
+    .employee-schedule-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .employee-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+
+    .schedule-boxes {
+        margin-top: 10px;
+    }
+
+    .schedule-box {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    .employee-actions {
+        margin-top: 15px;
+    }
+
+    #editScheduleModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 400px;
+    }
+</style>
 {% endblock %}
