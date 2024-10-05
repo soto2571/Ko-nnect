@@ -4,111 +4,109 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-        crossorigin="anonymous"
-      />
-      <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        crossorigin="anonymous"
-      />
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            crossorigin="anonymous"
+        />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-      <title>{% block title %}Home{% endblock %}</title>
-    </head>
-    <style>
+        <title>{% block title %}Home{% endblock %}</title>
+
+        <!-- Custom Styles -->
+        <style>
+            /* Global Styles */
+            body {
+                background-color: #f8f9fa; /* Light background */
+                font-family: 'Arial', sans-serif; /* Clean font */
+            }
+
+            /* Navbar Styling */
+            .navbar {
+                background-color: #3c4f76; /* Custom navbar color */
+            }
+
+            /* Custom Button Styling */
             .custom-button {
                 background-color: transparent;
-                color: #000000;
-                border: 1px solid #000000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+                color: #3c4f76;
+                border: 1px solid #3c4f76;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 border-radius: 5px;
                 padding: 10px 20px;
-                text-transform: uppercase;
-                font-weight: bold;
                 transition: background-color 0.3s, color 0.3s;
             }
-            
+
             .custom-button:hover {
-                background-color: #000000;
+                background-color: #3c4f76;
                 color: #ffffff;
             }
-    </style>
-    <body style="background-color: #ffffff;">
-        <nav class="navbar navbar-expand-lg" style="background-color: #2e355f;">
+
+            /* Container Padding */
+            .container {
+                margin-top: 50px;
+            }
+
+            /* Responsive Media Queries */
+            @media (max-width: 768px) {
+                .navbar {
+                    background-color: #5c7699; /* Slightly lighter for small screens */
+                }
+
+                .custom-button {
+                    width: 100%; /* Full width buttons on small screens */
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg">
             <button 
-            class="navbar-toggler" 
-            type="button" 
-            data-toggle="collapse" 
-            data-target="#navbar">
+                class="navbar-toggler" 
+                type="button" 
+                data-toggle="collapse" 
+                data-target="#navbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar">
                 <div class="navbar-nav">
-                  {% if g.user.is_authenticated %}
-                    <a class="nav-item nav-link text-white" id="home" href="{{ url_for('views.home')}}">Home</a>
-                    <a class="nav-item nav-link text-white" id="logout" href="{{ url_for('auth.logout')}}">Logout</a>
+                    {% if g.user.is_authenticated %}
+                        <a class="nav-item nav-link text-white" id="home" href="{{ url_for('views.home')}}">Home</a>
+                        <a class="nav-item nav-link text-white" id="logout" href="{{ url_for('auth.logout')}}">Logout</a>
                     {% else %}
-                    <a class="nav-item nav-link text-white" id="login" href="{{ url_for('auth.login')}}">Login</a>
-                    <a class="nav-item nav-link text-white" id="adminSignUp" href="{{ url_for('auth.admin_sign_up')}}">Admin Sign Up</a>
+                        <a class="nav-item nav-link text-white" id="login" href="{{ url_for('auth.login')}}">Login</a>
+                        <a class="nav-item nav-link text-white" id="adminSignUp" href="{{ url_for('auth.admin_sign_up')}}">Admin Sign Up</a>
                     {% endif %}
                 </div>
             </div>
         </nav>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          {% for category, message in messages %}
-          {% if category == 'error' %}
-          <div class="alert alert-danger alert-dismissable fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% else %}
-          <div class="alert alert-success alert-dismissable fade show" role="alert">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endif %}
-          {% endfor %}
-        {% endif %}
-        {% endwith %}
-
+        
         <div class="container">
-        {% block content%}
-        {% endblock%}   
+            {% block content %}
+            {% endblock %}
         </div>
 
-
-
-
-
-
+        <!-- Scripts -->
         <script
-      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-
-    <script 
-    type="text/javascript" 
-    src="{{ url_for('static', filename='index.js') }}"
-    ></script>
+            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous">
+        </script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous">
+        </script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous">
+        </script>
     </body>
-
 </html>

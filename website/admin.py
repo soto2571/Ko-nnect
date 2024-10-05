@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, abort, flash
 from flask_login import login_required, current_user
 from .models import User, Schedule
 from . import db
 from werkzeug.security import generate_password_hash
-from datetime import datetime, date, timedelta
+from datetime import datetime
 
 admin = Blueprint('admin', __name__)
 
@@ -12,14 +12,10 @@ admin = Blueprint('admin', __name__)
 def admin_panel():
     if not current_user.is_admin:
         return redirect(url_for('home'))
-    
-    # Filter employees and schedules based on the current admin
-    employees = User.query.filter_by(created_by=current_user.id).all()
-    schedules = Schedule.query.filter_by(created_by=current_user.id).all()
+    employees = User.query.all()
+    schedules = Schedule.query.all()
 
-    business_days_list = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-    return render_template('admin_panel.html', employees=employees, schedules=schedules, user=current_user, business_days_list=business_days_list)
+    return render_template('admin_panel.html', employees=employees, schedules=schedules, user=current_user)
 
 @admin.route('/create-user', methods=['POST'])
 @login_required
@@ -31,7 +27,6 @@ def create_user():
     first_name = request.form.get('first_name')
     password = request.form.get('password')
     password_confirm = request.form.get('password_confirm')
-    availability = request.form.get('availability')
     
     if not email or not first_name or not password or not password_confirm:
         flash("All fields are required!")
@@ -47,7 +42,7 @@ def create_user():
         return redirect(url_for('admin.admin_panel'))
     
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
-    new_user = User(email=email, first_name=first_name, password=hashed_password, is_admin=False, availability=availability, created_by=current_user.id)
+    new_user = User(email=email, first_name=first_name, password=hashed_password, is_admin=False)
     
     try:
         db.session.add(new_user)
@@ -95,147 +90,3 @@ def create_schedule():
         flash(f"An error occurred: {e}", category='error')
 
     return redirect(url_for('admin.admin_panel'))
-
-@admin.route('/delete_schedule/<int:id>', methods=["POST"])
-@login_required
-def delete_schedule(id):
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-    
-    schedule = Schedule.query.get_or_404(id) # ???
-    try:
-        db.session.delete(schedule) 
-        db.session.commit()
-        flash("Schedule deleted succesfully!", category='success')
-    except Exception as e:
-        db.session.rollback() # ???
-        flash(f"An error ocurred while deleting the schedule: {e}", category='error')
-
-    return redirect(url_for('admin.admin_panel'))
-
-@admin.route('/delete_employee/<int:id>', methods=["POST"])
-@login_required
-def delete_employee(id):
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-    
-    employee = User.query.get_or_404(id) # ???
-    try:
-        db.session.delete(employee)
-        db.session.commit()
-        flash("Employee deleted succesfully!", category='success')
-    except Exception as e:
-        db.session.rollback() # ???
-        flash(f"An error occurred while deleting the employee: {e}", category='error')
-   
-    return redirect(url_for('admin.admin_panel'))
-
-@admin.route('/set-business-hours', methods=['POST'])
-@login_required
-def set_business_hours():
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-
-    opening_time_str = request.form.get('opening_time')
-    closing_time_str = request.form.get('closing_time')
-    business_days = request.form.getlist('business_days')  # Get selected days
-
-    try:
-        # Save opening and closing time
-        current_user.opening_time = datetime.strptime(opening_time_str, "%H:%M").time()
-        current_user.closing_time = datetime.strptime(closing_time_str, "%H:%M").time()
-
-        # Save business days as a comma-separated string
-        current_user.business_days = ",".join(business_days)
-
-        db.session.commit()
-        flash("Business hours and days updated successfully!", category='success')
-    except Exception as e:
-        db.session.rollback()
-        flash(f"An error occurred: {e}", category='error')
-
-    return redirect(url_for('admin.admin_panel'))
-
-
-def generate_schedule_for_employee(employee, duration, admin):
-    start_hour = admin.opening_time
-    end_hour = admin.closing_time
-    business_days = list(map(int, admin.business_days.split(',')))  # Convert string to list of integers
-
-    # Generate shifts for the given duration (in weeks)
-    for day_offset in range(duration * 7):
-        current_day = (date.today() + timedelta(days=day_offset)).weekday()
-
-        # Only create shifts on business days
-        if current_day in business_days:
-            shift_start = datetime.combine(date.today() + timedelta(days=day_offset), start_hour)
-            shift_end = datetime.combine(date.today() + timedelta(days=day_offset), end_hour)
-
-            # Create the schedule for the employee
-            new_schedule = Schedule(
-                employee_id=employee.id,
-                shift_start=shift_start,
-                shift_end=shift_end,
-                created_by=admin.id
-            )
-            db.session.add(new_schedule)
-
-    db.session.commit()
-
-@admin.route('/generate-schedule/<int:employee_id>/<int:duration>', methods=['POST'])
-@login_required
-def generate_schedule(employee_id, duration):
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-
-    employee = User.query.get_or_404(employee_id)
-    if not employee:
-        flash("Employee not found!", category='error')
-        return redirect(url_for('admin.admin_panel'))
-
-    try:
-        generate_schedule_for_employee(employee, duration, current_user)
-        flash(f"Schedule for {employee.first_name} generated successfully!", category='success')
-    except Exception as e:
-        flash(f"An error occurred while generating the schedule: {e}", category='error')
-
-    return redirect(url_for('admin.admin_panel'))
-
-from flask import jsonify
-
-@admin.route('/edit_schedule/<int:id>', methods=['POST'])
-@login_required
-def edit_schedule(id):
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-
-    schedule = Schedule.query.get(id)
-    if not schedule:
-        return jsonify({'success': False, 'error': 'Schedule not found!'}), 404
-
-    # Get updated values from the JSON request
-    data = request.get_json()
-    shift_start_str = data.get('shift_start')
-    shift_end_str = data.get('shift_end')
-
-    if not shift_start_str or not shift_end_str:
-        return jsonify({'success': False, 'error': 'All fields are required to update the schedule.'}), 400
-
-    try:
-        # Convert the string inputs to datetime objects
-        shift_start = datetime.fromisoformat(shift_start_str)
-        shift_end = datetime.fromisoformat(shift_end_str)
-
-        if shift_start >= shift_end:
-            return jsonify({'success': False, 'error': 'Shift start time must be before the shift end time.'}), 400
-
-        # Update the schedule
-        schedule.shift_start = shift_start
-        schedule.shift_end = shift_end
-        db.session.commit()
-        return jsonify({'success': True})
-    except ValueError as ve:
-        return jsonify({'success': False, 'error': f"Invalid date format: {ve}"}), 400
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'success': False, 'error': f"An error occurred: {e}"}), 500
