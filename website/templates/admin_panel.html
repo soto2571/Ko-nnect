@@ -119,10 +119,12 @@
                 {% endfor %}
             </div>
             <div class="employee-actions">
-                <!-- Generate Automated Schedule for this employee -->
-                <form method="POST" action="{{ url_for('admin.generate_schedule', employee_id=employee.id, duration=2) }}" style="display:inline;">
-                    <button type="submit" class="btn btn-success btn-sm">Generate 2-Week Schedule</button>
-                </form>
+                {% if can_create_schedule %}
+                    <!-- Generate Automated Schedule for this employee -->
+                    <form method="POST" action="{{ url_for('admin.generate_schedule', employee_id=employee.id, duration=2) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Generate 2-Week Schedule</button>
+                    </form>
+                {% endif %}
                 
                 <!-- Delete Employee Button -->
                 <form method="POST" action="{{ url_for('admin.delete_employee', id=employee.id) }}" style="display:inline;">

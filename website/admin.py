@@ -12,14 +12,48 @@ admin = Blueprint('admin', __name__)
 def admin_panel():
     if not current_user.is_admin:
         return redirect(url_for('home'))
-    
+
     # Filter employees and schedules based on the current admin
     employees = User.query.filter_by(created_by=current_user.id).all()
     schedules = Schedule.query.filter_by(created_by=current_user.id).all()
 
     business_days_list = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-    return render_template('admin_panel.html', employees=employees, schedules=schedules, user=current_user, business_days_list=business_days_list)
+    # Retrieve the admin's opening and closing times from current_user
+    opening_time = current_user.opening_time
+    closing_time = current_user.closing_time
+
+    if opening_time and closing_time:
+        # Combine opening and closing times with today's date to perform the time difference calculation
+        from datetime import datetime
+
+        today = datetime.now().date()
+        opening_dt = datetime.combine(today, opening_time)
+        closing_dt = datetime.combine(today, closing_time)
+
+        # Calculate total business hours
+        total_business_hours = (closing_dt - opening_dt).total_seconds() / 3600
+    else:
+        total_business_hours = 0  # Default if times are not set
+
+    # Determine if schedules can be created (e.g., if total business hours exceed 9)
+    can_create_schedule = total_business_hours <= 9
+
+    # Filter schedules based on total working hours (8 hours work + 1 hour break)
+    valid_schedules = []
+    for schedule in schedules:
+        total_hours = (schedule.shift_end - schedule.shift_start).total_seconds() / 3600 - 1  # Subtracting break time
+        if total_hours >= 8:  # Only include valid schedules
+            valid_schedules.append(schedule)
+
+    return render_template(
+        'admin_panel.html',
+        employees=employees,
+        schedules=valid_schedules,
+        user=current_user,
+        business_days_list=business_days_list,
+        can_create_schedule=can_create_schedule
+    )
 
 @admin.route('/create-user', methods=['POST'])
 @login_required
@@ -162,6 +196,12 @@ def generate_schedule_for_employee(employee, duration, admin):
     end_hour = admin.closing_time
     business_days = list(map(int, admin.business_days.split(',')))  # Convert string to list of integers
 
+    total_working_hours = (datetime.combine(date.today(), end_hour) - datetime.combine(date.today(), start_hour)).seconds / 3600 - 1 # substract 1 hour for break
+
+    # Check if total working hours exceed 9
+    if total_working_hours > 8:
+        return # Do not generate the schedule if working hours exceed limit
+    
     # Generate shifts for the given duration (in weeks)
     for day_offset in range(duration * 7):
         current_day = (date.today() + timedelta(days=day_offset)).weekday()
