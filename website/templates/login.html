@@ -5,6 +5,9 @@
 {% block content %}
 <div class="container">
     <div class="login-container">
+        <div class="text-center">
+            <img src="{{ url_for('static', filename='images/Ko-nnect.png') }}" alt="Logo" class="login-logo">
+        </div>
         <form method="POST">
             <h3 align="center">Login</h3>
             <div class="form-group">
@@ -17,7 +20,7 @@
             </div>
             <br />
             <div class="text-center">
-                <button type="submit" class="custom-button w-100">Login</button>
+                <button type="submit" class="btn btn-rect-to-round btn-rect-to-round--black">Login</button>
             </div>
         </form>
     </div>
@@ -33,12 +36,48 @@
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
     }
 
-    .custom-button {
-        background-color: transparent;
-        color: rgb(0, 0, 0);
-        border: 1px solid rgb(0, 0, 0);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Dark shadow */
-        border-radius: 5px;
+    .login-logo {
+        width: 150px; /* Adjust width to fit your layout */
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        font-family: Arial, Helvetica, sans-serif;
+        text-transform: uppercase;
+    }
+
+    /* Button hover effect (if needed for additional elements inside the button) */
+    .btn:hover .btn-slide-show-text1 {
+        margin-left: 65px;
+    }
+
+    /* Rounded button styles */
+    .btn-rect-to-round {
+        height: 55px;
+        width: 200px;
+        font-size: 16px;
+        font-weight: 600;
+        background: transparent;
+        cursor: pointer;
+        transition: 0.5s ease-in;
+    }
+
+    /* Hover effect for rounded button */
+    .btn-rect-to-round:hover {
+        border-radius: 60px;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    /* Specific black button style */
+    .btn-rect-to-round--black {
+        border: 2px solid rgb(51, 51, 51);
+        color: rgb(51, 51, 51) !important;
+    }
+
+    /* Black button hover effect */
+    .btn-rect-to-round--black:hover {
+        border-color: rgb(51, 51, 51);
+        background: rgb(51, 51, 51);
     }
 </style>
 {% endblock %}
