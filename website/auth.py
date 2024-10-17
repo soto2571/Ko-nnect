@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, g, session
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
@@ -16,10 +16,12 @@ def login():
         user = User.query.filter_by(email=email).first()
 
         if user and check_password_hash(user.password, password):
-            flash('Logged in succesfully!', category='success')
+            session['user_id'] = user.id  # Set session after successful login
+            g.user = user  # Set g.user after successful login
+            flash('Logged in successfully!', category='success')
             login_user(user, remember=True)
             if user.is_admin:
-                return redirect(url_for('admin.admin_panel')) # Redirect admin to the admin panel
+                return redirect(url_for('admin.admin_panel'))  # Redirect admin to the admin panel
             else:
                 return redirect(url_for('views.home'))
         else:

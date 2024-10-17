@@ -3,17 +3,9 @@
 {% block title %}Admin-Panel{% endblock %}
 
 {% block content %}
-<div class="overlay"></div>
-
-<svg viewBox="0 0 1440 320" class="background-svg" style="position: absolute; top: 0; left: 0;">
-    <path fill="#003366" fill-opacity="1" d="M0,64L40,58.7C80,53,160,43,240,48C320,53,400,75,480,101.3C560,128,640,160,720,160C800,160,880,128,960,112C1040,96,1120,96,1200,101.3C1280,107,1360,117,1400,122.7L1440,128L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
-</svg>
-<svg viewBox="0 0 1440 320" class="background-svg" style="position: absolute; bottom: 0; left: 0;">
-    <path fill="#ff7e5f" fill-opacity="0.5" d="M0,256L40,240C80,224,160,192,240,186.7C320,181,400,203,480,229.3C560,256,640,288,720,288C800,288,880,256,960,240C1040,224,1120,224,1200,240C1280,256,1360,288,1400,304L1440,320L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></path>
-</svg>
-
+        
     <div class="content">
-<div class="grid grid-cols-3 gap-6 p-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
     <!-- Set Business Hours Card -->
     <div class="col-span-1 bg-white backdrop-blur-lg p-6 opacity-90 shadow-md rounded-lg w-full md:w-75 h-auto">
         <form method="POST" action="{{ url_for('admin.set_business_hours') }}">
@@ -47,7 +39,8 @@
         </form>
     </div>
 
-<div class="col-span-1 bg-blue-50 big-opacity-10 opacity-90 p-6 border-blue-200 shadow-md rounded-lg" style="height: 32rem;">
+    
+<div class="col-span-1 bg-white backdrop-blur-lg p-6 opacity-90 shadow-md rounded-lg" style="height: 32rem;">
     <form method="POST" action="{{ url_for('admin.create_schedule') }}">
         <h3 class="text-xl font-bold mb-4" align="center">Create Schedule</h3>
 
@@ -118,8 +111,9 @@
 </div>
 
 <!-- Business Hours Section -->
+ <div class="colorText">
 <div class="flex justify-center items-center">
-<div class="p-6 bg-opacity-80 shadow-md rounded-lg backdrop-blur-lg content-center" style="height: 18rem; width: 20rem;">
+<div class="p-6 bg-opacity-80 shadow-md rounded-lg backdrop-blur-lg content-center border border-white border-opacity-50 shadow-white" style="height: 18rem; width: 20rem;">
     <h3 class="text-xl font-bold text-center">Business Hours</h3>
     <p class="text-center">Opening Time: <strong>{{ user.opening_time }}</strong></p>
     <p class="text-center">Closing Time: <strong>{{ user.closing_time }}</strong></p>
@@ -137,22 +131,26 @@
     </p>
 </div>
 </div>
+</div>
 
 <!-- Space between Business Hours and Employee List -->
 <div class="mt-8">
+    <div class="colorText">
     <h3 class="text-2xl font-bold text-center">Employee List & Schedules</h3>
-    <div class="employee-schedule-container mt-4">
+    </div>
+    <div class="employee-schedule-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {% for employee in employees %}
-            <div class="employee-card bg-white p-4 shadow-md rounded-lg mb-4">
-                <h4 class="font-semibold">{{ employee.first_name }}</h4>
+            <div class="employee-card bg-white p-4 shadow-md rounded-lg mb-4 hover:shadow-lg transition-shadow duration-300">
+                <h4 class="font-semibold text-xl">{{ employee.first_name }}</h4>
                 <p><strong>Email:</strong> {{ employee.email }}</p>
                 <p><strong>Availability:</strong> {{ employee.availability }}</p>
-                <div class="schedule-boxes">
+
+                <div class="schedule-boxes mt-3">
                     {% for schedule in schedules if schedule.employee_id == employee.id %}
-                        <div class="schedule-box border p-2 rounded-md mb-2">
+                        <div class="schedule-box border p-2 rounded-md mb-2 {% if schedule not in valid_schedules %} bg-red-100 {% endif %}">
                             <p><strong>Start:</strong> {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}</p>
                             <p><strong>End:</strong> {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}</p>
-                            <button class="edit-btn btn btn-warning btn-sm"
+                            <button class="edit-btn btn btn-warning btn-sm mt-1"
                                     data-schedule-id="{{ schedule.id }}"
                                     data-shift-start="{{ schedule.shift_start.strftime('%Y-%m-%dT%H:%M') }}"
                                     data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
@@ -161,15 +159,14 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="employee-actions">
+
+                <div class="employee-actions mt-2">
                     {% if can_create_schedule %}
-                        <!-- Generate Automated Schedule for this employee -->
                         <form method="POST" action="{{ url_for('admin.generate_schedule', employee_id=employee.id, duration=2) }}" style="display:inline;">
                             <button type="submit" class="btn btn-success btn-sm">Generate 2-Week Schedule</button>
                         </form>
                     {% endif %}
-                    
-                    <!-- Delete Employee Button -->
+
                     <form method="POST" action="{{ url_for('admin.delete_employee', id=employee.id) }}" style="display:inline;">
                         <button type="submit" class="btn btn-danger btn-sm">Delete Employee</button>
                     </form>
@@ -187,53 +184,42 @@
 </div>
 
 <!-- Modal for Editing Schedule -->
-<div id="editScheduleModal" style="display: none;">
-    <div class="modal-content">
-        <h3>Edit Schedule</h3>
+<div id="editScheduleModal" class="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50" style="display: none;">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+        <h3 class="text-xl font-semibold mb-4">Edit Schedule</h3>
         <form id="editScheduleForm">
             <input type="hidden" id="schedule_id" name="schedule_id">
-            
-            <div class="form-group">
-                <label for="edit_shift_start">Entry Hour</label>
-                <input type="datetime-local" class="form-control" id="edit_shift_start" name="shift_start" required>
+            <div class="form-group mb-4">
+                <label for="edit_shift_start" class="block font-medium">Entry Hour</label>
+                <input type="datetime-local" class="form-control block w-full p-2 border rounded-md" id="edit_shift_start" name="shift_start" required>
             </div>
-            <div class="form-group">
-                <label for="edit_shift_end">Exit Hour</label>
-                <input type="datetime-local" class="form-control" id="edit_shift_end" name="shift_end" required>
+            <div class="form-group mb-4">
+                <label for="edit_shift_end" class="block font-medium">Exit Hour</label>
+                <input type="datetime-local" class="form-control block w-full p-2 border rounded-md" id="edit_shift_end" name="shift_end" required>
             </div>
-            
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-            <button type="button" class="btn btn-secondary" onclick="document.getElementById('editScheduleModal').style.display='none'">Cancel</button>
+            <div class="flex justify-end space-x-4">
+                <button type="submit" class="btn bg-blue-500 text-white px-4 py-2 rounded-md">Save Changes</button>
+                <button type="button" class="btn bg-gray-300 px-4 py-2 rounded-md" onclick="document.getElementById('editScheduleModal').style.display='none'">Cancel</button>
+            </div>
         </form>
     </div>
 </div>
 </div>
-
-
 
 <!-- Include CSS for better presentation -->
 <style>
     body {
         position: relative; /* Enable positioning for absolute elements */
         margin: 0;
+        padding: 0;
         font-family: Arial, sans-serif; /* Change font if needed */
     }
-
-    .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.4); /* Sky blue with 70% opacity */
-    z-index: 1; /* Ensure it's above the SVG but below content */
-}
 
     .background-svg {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
+        width: 100;
         height: auto;
         z-index: -1; /* Make sure it stays behind other elements */
     }
@@ -241,7 +227,7 @@
     .content {
         position: relative; /* Keep content on top of background */
         z-index: 2; /* Above the overlay */
-        padding: 20px; /* Some padding */
+        padding: 0px; /* Some padding */
     }
     
     .employee-schedule-container {
@@ -292,6 +278,9 @@
         padding: 20px;
         border-radius: 8px;
         width: 400px;
+    }
+    .colorText{
+        color:white;
     }
 </style>
 {% endblock %}

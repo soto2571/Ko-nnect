@@ -16,6 +16,7 @@ def admin_panel():
     # Filter employees and schedules based on the current admin
     employees = User.query.filter_by(created_by=current_user.id).all()
     schedules = Schedule.query.filter_by(created_by=current_user.id).all()
+    print(f"Schedules fetched for admin {current_user.id}: {schedules}")
 
     business_days_list = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -46,10 +47,15 @@ def admin_panel():
         if total_hours >= 8:  # Only include valid schedules
             valid_schedules.append(schedule)
 
+    # Add a property to each schedule indicating if it's valid
+    for schedule in schedules:
+        schedule.is_valid = (schedule in valid_schedules)
+
     return render_template(
         'admin_panel.html',
         employees=employees,
-        schedules=valid_schedules,
+        schedules=schedules,
+        valid_schedules=valid_schedules,
         user=current_user,
         business_days_list=business_days_list,
         can_create_schedule=can_create_schedule
@@ -192,15 +198,16 @@ def set_business_hours():
 
 
 def generate_schedule_for_employee(employee, duration, admin):
+    print(f"Generating schedule for {employee.first_name} for {duration} weeks")
+    
     start_hour = admin.opening_time
     end_hour = admin.closing_time
+    
+    if not start_hour or not end_hour:
+        print(f"Opening or closing time not set for {admin.first_name}")
+        return
+    
     business_days = list(map(int, admin.business_days.split(',')))  # Convert string to list of integers
-
-    total_working_hours = (datetime.combine(date.today(), end_hour) - datetime.combine(date.today(), start_hour)).seconds / 3600 - 1 # substract 1 hour for break
-
-    # Check if total working hours exceed 9
-    if total_working_hours > 8:
-        return # Do not generate the schedule if working hours exceed limit
     
     # Generate shifts for the given duration (in weeks)
     for day_offset in range(duration * 7):
@@ -211,16 +218,22 @@ def generate_schedule_for_employee(employee, duration, admin):
             shift_start = datetime.combine(date.today() + timedelta(days=day_offset), start_hour)
             shift_end = datetime.combine(date.today() + timedelta(days=day_offset), end_hour)
 
-            # Create the schedule for the employee
-            new_schedule = Schedule(
-                employee_id=employee.id,
-                shift_start=shift_start,
-                shift_end=shift_end,
-                created_by=admin.id
-            )
-            db.session.add(new_schedule)
+            # Calculate total working hours for the shift
+            total_working_hours = (shift_end - shift_start).total_seconds() / 3600 - 1  # Subtract 1 hour for break
+
+            # Only create the schedule if it meets the working hours criteria
+            if total_working_hours >= 8:
+                new_schedule = Schedule(
+                    employee_id=employee.id,
+                    shift_start=shift_start,
+                    shift_end=shift_end,
+                    created_by=admin.id
+                )
+                db.session.add(new_schedule)
+                print(f"Created schedule for {employee.first_name}: Start {shift_start}, End {shift_end}")
 
     db.session.commit()
+    print("Database changes committed successfully.")
 
 @admin.route('/generate-schedule/<int:employee_id>/<int:duration>', methods=['POST'])
 @login_required
