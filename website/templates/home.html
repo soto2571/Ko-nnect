@@ -20,63 +20,62 @@
 </section>
 
 <div class="calendar-container">
-    <h2 class="calendar-title">Calendar View</h2>
-    <div class="calendar-grid">
-        <div class="calendar-header">
-            <div class="day">Sun</div>
-            <div class="day">Mon</div>
-            <div class="day">Tue</div>
-            <div class="day">Wed</div>
-            <div class="day">Thu</div>
-            <div class="day">Fri</div>
-            <div class="day">Sat</div>
-        </div>
-        <div class="calendar-body">
-            {% for date in dates %}
-            <div class="calendar-day {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
-                <div class="day-date">{{ date.strftime('%d') }}</div>
-                <div class="shift-info">
-                    {% set formatted_date = date.strftime('%Y-%m-%d') %}
-                    {% if schedules[formatted_date] %}
-                        {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
-                    {% else %}
-                        No shift
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
+  <h2 class="calendar-title">Calendar View</h2>
+  <div class="calendar-grid">
+      <div class="calendar-header">
+          <div class="day">Sun</div>
+          <div class="day">Mon</div>
+          <div class="day">Tue</div>
+          <div class="day">Wed</div>
+          <div class="day">Thu</div>
+          <div class="day">Fri</div>
+          <div class="day">Sat</div>
+      </div>
+      <div class="calendar-body">
+          {% for date in calendar_dates %}  {# Change 'dates' to 'calendar_dates' #}
+          <div class="calendar-day {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
+              <div class="day-date">{{ date.strftime('%d') }}</div>
+              <div class="shift-info">
+                  {% set formatted_date = date.strftime('%Y-%m-%d') %}
+                  {% if schedules[formatted_date] %}
+                      {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
+                  {% else %}
+                      No shift
+                  {% endif %}
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
 </div>
 
-
 <div class="container swiper">
-    <div class="header-title">
-        <h1 class="schedule-title">Your Schedule's</h1>
-    </div>
-    <div class="slider-wrapper">
-        <div class="card-list swiper-wrapper">
-            {% for date in dates %}
-            <div class="card-item swiper-slide">
-                <img src="{{ url_for('static', filename='images/clock.jpg') }}" alt="User Image" class="user-image">
-                <div class="day-label {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
-                    {{ date.strftime('%A') }}
-                </div> <!-- Day of the week -->
-                <h2 class="user-name">{{ date.strftime('%B %d') }} <br>
-                    {% set formatted_date = date.strftime('%Y-%m-%d') %}
-                    {% if schedules[formatted_date] %}
-                        {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
-                    {% else %}
-                        No shift scheduled
-                    {% endif %}
-                </h2>
-            </div>
-            {% endfor %}
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-slide-button swiper-button-prev"></div>
-        <div class="swiper-slide-button swiper-button-next"></div>
-    </div>
+  <div class="header-title">
+      <h1 class="schedule-title">Your Schedule's</h1>
+  </div>
+  <div class="slider-wrapper">
+      <div class="card-list swiper-wrapper">
+          {% for date in dates %}
+          <div class="card-item swiper-slide">
+              <img src="{{ url_for('static', filename='images/clock.jpg') }}" alt="User Image" class="user-image">
+              <div class="day-label {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
+                  {{ date.strftime('%A') }}
+              </div> <!-- Day of the week -->
+              <h2 class="user-name">{{ date.strftime('%B %d') }} <br>
+                  {% set formatted_date = date.strftime('%Y-%m-%d') %}
+                  {% if schedules[formatted_date] %}
+                      {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
+                  {% else %}
+                      No shift scheduled
+                  {% endif %}
+              </h2>
+          </div>
+          {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-slide-button swiper-button-prev"></div>
+      <div class="swiper-slide-button swiper-button-next"></div>
+  </div>
 </div>
 
 <style>

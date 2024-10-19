@@ -7,6 +7,11 @@ from datetime import datetime, date, timedelta
 
 views = Blueprint('views', __name__)
 
+from datetime import datetime, timedelta
+from flask import redirect, url_for, render_template
+from flask_login import login_required, current_user
+from .models import Schedule  # Make sure to import your Schedule model
+
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
@@ -18,8 +23,9 @@ def home():
     dates = []
     schedules = {}
     today_schedule = None  # Initialize today_schedule
+    calendar_dates = []  # Initialize for the calendar view
 
-    # Calculate today and next 13 days
+    # Calculate today and next 13 days for cards
     for i in range(14):
         date = today + timedelta(days=i)
         formatted_date = date.strftime('%Y-%m-%d')  # Use this format for querying
@@ -35,4 +41,9 @@ def home():
 
         dates.append(date)
 
-    return render_template("home.html", user=current_user, dates=dates, schedules=schedules, today_schedule=today_schedule)
+    # Calculate calendar dates for the next 4 weeks (28 days)
+    for i in range(-6, 15):  # Adjust the range to display the desired number of weeks
+        date = today + timedelta(days=i)
+        calendar_dates.append(date)
+
+    return render_template("home.html", user=current_user, dates=dates, schedules=schedules, today_schedule=today_schedule, calendar_dates=calendar_dates)
