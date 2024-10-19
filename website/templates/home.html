@@ -21,6 +21,9 @@
 
 
 <div class="container swiper">
+    <div class="header-title">
+        <h1 class="schedule-title">Your Schedule's</h1>
+    </div>
     <div class="slider-wrapper">
         <div class="card-list swiper-wrapper">
             {% for date in dates %}
@@ -55,6 +58,17 @@
 	grid-template-columns: repeat(1, 1fr);
 	align-items: center;
     color: #fff
+}
+.header-title {
+    text-align: center; /* Center the title */
+    margin: 20px 0; /* Add some vertical spacing */
+}
+
+.schedule-title {
+    font-size: 1.5rem; /* Increase font size */
+    font-weight: 700; /* Make it bold */
+    color: white; /* Set text color to white */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
 }
 .home-text h1{
 	font-size: 4.5rem;
