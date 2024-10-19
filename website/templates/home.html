@@ -3,18 +3,224 @@
 {% block title %}Home{% endblock %} 
 
 {% block content %}
-<h1 align="center">Your Schedule</h1>
-<ul class="list-group list-group-flush" id="schedules">
-    {% if schedules %}
-        {% for schedule in schedules %}
-            <li class="list-group-item">
-                Shift Start: {{ schedule.shift_start }}<br>
-                Shift End: {{ schedule.shift_end }}
-            </li>
-        {% endfor %}
-    {% else %}
-        <li class="list-group-item">No schedule available</li>
-    {% endif %}
-</ul>
+
+<!----home--->
+<section class="home" id="home">
+    <div class="home-text">
+        <h1>Welcome Back, {{ user.first_name }}!</h1><br><span></h1>
+            <p> Today's shift <br>
+                {% if today_schedule %}
+                {{ today_schedule.shift_start.strftime('%B %d, %I:%M %p') }} - {{ today_schedule.shift_end.strftime('%I:%M %p') }}
+                {% else %}
+                    No shift scheduled for today.
+                {% endif %}
+            </p>
+        <a href="#" class="btn">View Full Schedule</a>
+    </div>
+</section>
+
+
+<div class="container swiper">
+    <div class="slider-wrapper">
+        <div class="card-list swiper-wrapper">
+            {% for date in dates %}
+            <div class="card-item swiper-slide">
+                <img src="{{ url_for('static', filename='images/clock.jpg') }}" alt="User Image" class="user-image">
+                <div class="day-label {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
+                    {{ date.strftime('%A') }}
+                </div> <!-- Day of the week -->
+                <h2 class="user-name">{{ date.strftime('%B %d') }} <br>
+                    {% set formatted_date = date.strftime('%Y-%m-%d') %}
+                    {% if schedules[formatted_date] %}
+                        {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
+                    {% else %}
+                        No shift scheduled
+                    {% endif %}
+                </h2>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-slide-button swiper-button-prev"></div>
+        <div class="swiper-slide-button swiper-button-next"></div>
+    </div>
+</div>
+
+<style>
+.home {
+	min-height: 100vh;
+	width: 100%;
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	align-items: center;
+    color: #fff
+}
+.home-text h1{
+	font-size: 4.5rem;
+	font-weight: 800;
+	line-height: 1.2;
+	letter-spacing: .6rem;
+	margin-bottom: 1.4rem;
+}
+.home-text span{
+	font-size: 3.3rem;
+}
+.home-text p{
+	font-size: 1rem;
+	font-weight: 500;
+	margin-bottom: 3rem;
+	letter-spacing: .2rem;
+}
+.btn{
+	display: inline-block;
+	padding: 13px 25px;
+	background: #000000;
+	color: #ffffff;
+	font-size: 15px;
+	letter-spacing: 1px;
+	font-weight: 600;
+	border-radius: 5px;
+	transition: all .35s ease;
+}
+.btn:hover{
+	transform: translateY(-5px);
+	background: #fff;
+	color: #000000;
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.slider-wrapper {
+  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 70px 55px;
+}
+.card-list .card-item {
+  height: auto;
+  color: #fff;
+  user-select: none;
+  padding: 35px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 10px;
+  backdrop-filter: blur(30px);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.card-list .card-item .user-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 40px;
+  border: 3px solid #fff;
+  padding: 4px;
+}
+.card-list .card-item .user-profession {
+  font-size: 30px;
+  color: #e3e3e3;
+  font-weight: 500;
+  margin: 14px 0 40px;
+}
+.card-list .card-item .message-button {
+  font-size: 30px;
+  padding: 10px 35px;
+  color: #030728;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+}
+.card-list .card-item .message-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #fff;
+  color: #fff;
+}
+.card-item {
+    position: relative; /* This allows the child elements to be positioned relative to the card */
+}
+
+.day-label {
+    position: absolute; /* Position it absolutely within the card */
+    top: 10px; /* Adjust this value as needed */
+    left: 10px; /* Adjust this value as needed */
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for better visibility */
+    color: #fff; /* Text color */
+    padding: 5px 10px; /* Padding around the text */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 18px; /* Font size */
+    font-weight: bold; /* Bold text */
+}
+.day-label {
+    padding: 5px; /* Add some padding for better appearance */
+}
+
+.day-label.has-shift {
+    background-color: green; /* Green background */
+    color: white; /* Optional: Change text color for better contrast */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+.slider-wrapper .swiper-pagination-bullet {
+  background: #fff;
+  height: 13px;
+  width: 13px;
+  opacity: 0.5;
+}
+.slider-wrapper .swiper-pagination-bullet-active {
+  opacity: 1;
+}
+.slider-wrapper .swiper-slide-button {
+  color: #fff;
+  margin-top: -55px;
+  transition: 0.2s ease;
+}
+.slider-wrapper .swiper-slide-button:hover {
+  color: #4658ff;
+}
+@media (max-width: 768px) {
+  .slider-wrapper {
+    margin: 0 10px 40px;
+  }
+  .slider-wrapper .swiper-slide-button {
+    display: none;
+  }
+}
+</style>
+
+<script>
+    const swiper = new Swiper('.slider-wrapper', {
+  loop: true,
+  grabCursor: true,
+  spaceBetween: 30,
+  // Pagination bullets
+  pagination: {
+    el: '.swiper-pagination',
+    clickable: true,
+    dynamicBullets: true
+  },
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+  // Responsive breakpoints
+  breakpoints: {
+    0: {
+      slidesPerView: 1
+    },
+    768: {
+      slidesPerView: 2
+    },
+    1024: {
+      slidesPerView: 3
+    }
+  }
+});
+</script>
 
 {% endblock %}
