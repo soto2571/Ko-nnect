@@ -32,13 +32,19 @@
           <div class="day">Sat</div>
       </div>
       <div class="calendar-body">
-          {% for date in calendar_dates %}  {# Change 'dates' to 'calendar_dates' #}
-          <div class="calendar-day {% if schedules[date.strftime('%Y-%m-%d')] %} has-shift {% endif %}">
-              <div class="day-date">{{ date.strftime('%d') }}</div>
+          {% for entry in calendar_dates %}
+          <div class="calendar-day 
+              {% if entry.has_shift %} has-shift 
+              {% elif entry.is_holiday %} holiday 
+              {% endif %}">
+              <div class="day-date">{{ entry.date.strftime('%d') }}</div>
+              
               <div class="shift-info">
-                  {% set formatted_date = date.strftime('%Y-%m-%d') %}
-                  {% if schedules[formatted_date] %}
-                      {{ schedules[formatted_date].shift_start.strftime('%I:%M %p') }} - {{ schedules[formatted_date].shift_end.strftime('%I:%M %p') }}
+                  {% if entry.has_shift %}
+                      {{ schedules[entry.date.strftime('%Y-%m-%d')].shift_start.strftime('%I:%M %p') }} - 
+                      {{ schedules[entry.date.strftime('%Y-%m-%d')].shift_end.strftime('%I:%M %p') }}
+                  {% elif entry.is_holiday %}
+                      {{ entry.holiday_name }}
                   {% else %}
                       No shift
                   {% endif %}
@@ -46,6 +52,22 @@
           </div>
           {% endfor %}
       </div>
+  </div>
+</div>
+
+<div class="calendar-legend">
+  <h3>Legend - </h3> 
+  <div class="legend-item">
+      <div class="legend-color shift"></div>
+      <span>Shift</span>
+  </div>
+  <div class="legend-item">
+      <div class="legend-color holiday"></div>
+      <span>Holiday</span>
+  </div>
+  <div class="legend-item">
+      <div class="legend-color no-shift"></div>
+      <span>No Shift</span>
   </div>
 </div>
 
@@ -85,6 +107,51 @@
     background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
     border-radius: 10px; /* Rounded corners */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Shadow for depth */
+}
+
+/* Calendar Legend Styling */
+.calendar-legend {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.calendar-legend h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #ffffff;
+    margin-right: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    color: #fff
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Legend color for shifts (green) */
+.legend-color.shift {
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
+/* Legend color for holidays (custom color #231610) */
+.legend-color.holiday {
+    background-color: #231610;
+    color: white;
+}
+
+/* Legend color for no shifts (transparent or light grey) */
+.legend-color.no-shift {
+    background-color: rgba(211, 211, 211, 0.5); /* semi-transparent grey */
 }
 
 .calendar-title {
@@ -129,6 +196,35 @@
 .day-date {
     font-size: 1.5rem; /* Larger date size */
     color: white; /* Color for the date */
+}
+
+/* Default calendar day styling */
+.calendar-day {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Styling for days with shifts */
+.has-shift {
+    background-color: green; /* Keep shifts green */
+    color: white;
+}
+
+/* Styling for holidays (only if no shift is present) */
+.holiday {
+    background-color: #231610; /* Change to a holiday color like red */
+    color: white;
+}
+
+/* Styling for regular days */
+.calendar-day .day-date {
+    font-weight: bold;
+}
+
+.holiday-name {
+  color: #ffffff;
+  font-weight: 300;
 }
 
 .shift-info {
