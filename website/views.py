@@ -18,6 +18,7 @@ def home():
     schedules = {}
     today_schedule = None
     calendar_dates = []
+    total_hours_worked = 0
 
     # Get Puerto Rico holidays for the current year
     pr_holidays = holidays.PR(years=today.year)
@@ -37,9 +38,12 @@ def home():
 
         dates.append(date)
 
-    # Loop to generate the next 2 weeks (14 days) of calendar dates
-    for i in range(-6, 15):  # Adjust range as needed
-        date = today + timedelta(days=i)
+    # Set the start date of the week (Sunday) for the calendar
+    start_of_week = today - timedelta(days=today.weekday() + 1)
+
+    # Loop to generate the next 2 weeks (14 days) of calendar dates from the fixed Sunday
+    for i in range(21):  # Adjust the range to show the static calendar view
+        date = start_of_week + timedelta(days=i)
         formatted_date = date.strftime('%Y-%m-%d')
 
         is_holiday = date in pr_holidays
@@ -54,11 +58,22 @@ def home():
             'has_shift': has_shift
         })
 
+        # Calculate total hours worked in the current week
+        if has_shift:
+            shift = schedules[formatted_date]
+            worked_hours = (shift.shift_end - shift.shift_start).total_seconds() / 3600
+            total_hours_worked += worked_hours
+
+    # Deduct break time if hours worked exceed 5
+    if total_hours_worked > 5:
+        total_hours_worked -= 1  # Deduct 1 hour for the break
+
     return render_template(
         "home.html", 
         user=current_user, 
         dates=dates, 
         schedules=schedules, 
         today_schedule=today_schedule, 
-        calendar_dates=calendar_dates
+        calendar_dates=calendar_dates,
+        total_hours_worked=total_hours_worked  # Pass total hours worked to the template
     )

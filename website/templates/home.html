@@ -15,9 +15,13 @@
                     No shift scheduled for today.
                 {% endif %}
             </p>
-        <a href="#" class="btn">View Full Schedule</a>
+        <a href="#schedule" class="btn" onclick="smoothScrollTo('schedule'); return false;">View Full Schedule</a>
     </div>
 </section>
+
+<div class="total-hours" id="schedule">
+    <h3>Total Hours This Week: {{ total_hours_worked }} hours</h3>
+</div>
 
 <div class="calendar-container">
   <h2 class="calendar-title">Calendar View</h2>
@@ -101,6 +105,15 @@
 </div>
 
 <style>
+html {
+    scroll-behavior: smooth;
+}
+
+.total-hours{
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
     .calendar-container {
     margin: 20px 0; /* Add margin above and below */
     padding: 20px 20px 50px; /* Padding inside the calendar */
