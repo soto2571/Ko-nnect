@@ -5,25 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        // Script para alternar la visibilidad del menú en pantallas móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+    </script>
 </head>
 <body class="bg-gray-100">
     <!-- Header Section -->
     <header class="bg-white shadow-md p-4">
         <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo -->
             <h1 class="text-2xl font-bold">
                 <img src="{{ url_for('static', filename='images/Ko-nnect.png') }}" alt="Ko-nnect Logo" class="h-10">
             </h1>
-            <nav>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-4">
                 <ul class="flex space-x-4">
                     <li><a href="#features" class="hover:text-red-600">Features</a></li>
                     <li><a href="#about" class="hover:text-red-600">About</a></li>
                     <li><a href="#contact" class="hover:text-red-600">Contact</a></li>
-                    <li><a href="{{ url_for('auth.login') }}"
-                            class="bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-4 py-2 sm:px-6 sm:py-2 rounded-md shadow-md hover:shadow-lg hover:from-red-600 hover:to-red-800 hover:border-white-700 border-transparent border transition duration-200 ease-in-out transform hover:scale-105 text-sm sm:text-base">Log In</a></li>
-                </ul>
+                    <li>
+                        <a href="{{ url_for('auth.login') }}" 
+                           class="bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-4 py-2 sm:px-6 sm:py-2 rounded-md shadow-md hover:shadow-lg hover:from-red-600 hover:to-red-800 border-transparent transition duration-200 ease-in-out transform hover:scale-105 text-sm sm:text-base">
+                           Log In
+                        </a>
+                    </li>
                 </ul>
             </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
+
+        <!-- Mobile Navigation Menu -->
+        <nav id="mobile-menu" class="md:hidden hidden">
+            <ul class="flex flex-col space-y-4 p-4 bg-white">
+                <li><a href="#features" class="hover:text-red-600">Features</a></li>
+                <li><a href="#about" class="hover:text-red-600">About</a></li>
+                <li><a href="#contact" class="hover:text-red-600">Contact</a></li>
+                <li>
+                    <a href="{{ url_for('auth.login') }}" 
+                       class="bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-4 py-2 rounded-md shadow-md hover:shadow-lg hover:from-red-600 hover:to-red-800 border-transparent transition duration-200 ease-in-out transform hover:scale-105 text-sm">
+                       Log In
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </header>
 
     <!-- Hero Section -->
