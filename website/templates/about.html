@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <!-- Header Section -->
+  <header class="bg-white shadow-md p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">
+        <img
+          src="{{ url_for('static', filename='images/logo.png') }}"
+          alt="Ko-nnect Logo"
+          class="h-10" />
+      </h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#features" class="hover:text-blue-600">Features</a></li>
+          <li><a href="#about" class="hover:text-blue-600">About</a></li>
+          <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
+          <li>
+            <a href="#cta" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Get Started</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- About Section -->
+<section class="py-12 bg-white" id="about">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">About Us</h2>
+      <p class="text-gray-700 leading-relaxed">
+        La historia de esta aplicación es un testimonio de colaboración, innovación y dedicación. Desde el inicio, nuestro objetivo ha sido construir una plataforma sólida, intuitiva y eficiente que permita a nuestros usuarios conectar y mejorar sus experiencias.
+      </p>
+      <p class="text-gray-700 leading-relaxed mt-4">
+        Este es nuestro proyecto final de Holberton, un reflejo del aprendizaje y esfuerzo de nuestro equipo. Hemos trabajado intensamente para aplicar nuestros conocimientos y ofrecer una herramienta útil y confiable a nuestros usuarios.
+      </p>
+  
+      <div class="mt-8">
+        <h3 class="text-2xl font-semibold text-gray-800">Nuestro Equipo</h3>
+        <p class="text-gray-700 leading-relaxed mt-4">
+          Este proyecto fue posible gracias al trabajo comprometido y especializado de un equipo de profesionales en distintas áreas:
+        </p>
+        <ul class="list-disc list-inside mt-4 space-y-3 text-gray-700">
+          <li>
+            <strong>Sebastián Soto - Líder del Proyecto:</strong> Sebastián se encargó de dirigir cada etapa del desarrollo. Desde las primeras decisiones estratégicas hasta los ajustes finales, su liderazgo fue clave para lograr un producto que refleja nuestra misión y estándares de calidad.
+          </li>
+          <li>
+            <strong>Abdiel - Desarrollador Front-end:</strong> Con un enfoque en la interfaz de usuario, Abdiel trabajó incansablemente para ofrecer una experiencia visual y de navegación fluida. Utilizando tecnologías como Tailwind CSS, HTML y JavaScript, diseñó una interfaz intuitiva que conecta a los usuarios con las funcionalidades de la aplicación.
+          </li>
+          <li>
+            <strong>José Méndez - Revisor:</strong> José se encargó de las revisiones finales, asegurando que cada aspecto del producto estuviera optimizado y funcionando correctamente. Su atención al detalle y su rigurosa revisión de la funcionalidad ayudaron a evitar errores y mejorar la estabilidad de la aplicación.
+          </li>
+        </ul>
+      </div>
+  
+      <div class="mt-8">
+        <h3 class="text-2xl font-semibold text-gray-800">Tecnologías Utilizadas</h3>
+        <p class="text-gray-700 leading-relaxed mt-4">
+          Para el desarrollo de esta aplicación, utilizamos una serie de herramientas y librerías avanzadas que nos permitieron crear un producto robusto y de alto rendimiento. A continuación, una lista de las principales tecnologías empleadas:
+        </p>
+        <ul class="list-disc list-inside mt-4 space-y-2 text-gray-700">
+          <li><strong>Backend:</strong> Python con Flask, Flask-SQLAlchemy, y SQLAlchemy para la administración de bases de datos.</li>
+          <li><strong>Frontend:</strong> HTML, Jinja2 para plantillas y Tailwind CSS para el diseño visual.</li>
+          <li><strong>Migraciones de Base de Datos:</strong> Alembic para gestionar las migraciones de datos.</li>
+          <li><strong>Autenticación y Seguridad:</strong> Flask-Login y Flask-JWT para autenticar usuarios de manera segura.</li>
+          <li><strong>Despliegue:</strong> Gunicorn para ejecutar la aplicación en un entorno de producción.</li>
+        </ul>
+      </div>
+  
+      <div class="mt-8">
+        <h3 class="text-2xl font-semibold text-gray-800">Nuestro Compromiso</h3>
+        <p class="text-gray-700 leading-relaxed mt-4">
+          Creemos firmemente en el poder de la tecnología para mejorar la vida de las personas. Esta aplicación representa solo el inicio de nuestro esfuerzo por crear herramientas útiles, y continuaremos perfeccionándola y expandiéndola. Estamos agradecidos de poder compartir este logro con nuestros usuarios y esperamos seguir creciendo junto a ellos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call-to-Action Section -->
+  <section class="bg-green-500 text-white py-20 text-center" id="cta">
+    <div class="container mx-auto">
+      <h4 class="text-3xl font-bold mb-4">Ready to Get Started?</h4>
+      <p class="text-lg mb-8">Sign up now and enjoy our services.</p>
+      <a href="#contact" class="bg-white text-green-500 font-bold px-8 py-4 rounded-lg">Join Now</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2024 Ko-nnect. All rights reserved.</p>
+      <nav class="mt-4">
+        <ul class="flex justify-center space-x-6">
+          <li><a href="#features" class="hover:underline">Features</a></li>
+          <li><a href="#about" class="hover:underline">About</a></li>
+          <li><a href="#contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
