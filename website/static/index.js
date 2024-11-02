@@ -19,6 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
             editSchedule(scheduleId);
         });
     });
+    // Script para alternar la visibilidad del menú en pantallas móviles
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
 
     // Event listener for form submission
     document.getElementById('editScheduleForm').addEventListener('submit', (e) => {
