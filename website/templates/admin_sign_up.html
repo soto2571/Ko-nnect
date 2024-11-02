@@ -1,23 +1,90 @@
-{% extends "base.html" %} {% block title %}Sign Up{% endblock %} {% block content %}
-<form method="POST">
-    <h3 align="center">Sign Up</h3>
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+{% extends "base.html" %}
+
+{% block title %}Admin Sign Up{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="signup-container">
+        <div class="text-center">
+            <img src="{{ url_for('static', filename='images/Ko-nnect.png') }}" alt="Logo" class="signup-logo">
+        </div>
+        <form method="POST">
+            <h3 align="center">Admin Sign Up</h3>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
+            </div>
+            <div class="form-group">
+                <label for="password1">Password</label>
+                <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter your password">
+            </div>
+            <div class="form-group">
+                <label for="password2">Password (Confirm)</label>
+                <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm your password">
+            </div>
+            <br />
+            <div class="text-center">
+                <button type="submit" class="btn btn-rect-to-round btn-rect-to-round--black">Sign Up</button>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Enter first name">
-    </div>
-    <div class="form-group">
-        <label for="password1">Password</label>
-        <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter your password">
-    </div>
-    <div class="form-group">
-        <label for="password2">Password (Confirm)</label>
-        <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm your password">
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+</div>
+
+<!-- Style to create the semi-transparent box -->
+<style>
+    .signup-container {
+        max-width: 400px;
+        margin: 100px auto;
+        background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    }
+
+    .signup-logo {
+        width: 150px; /* Adjust width to fit your layout */
+        margin-bottom: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn {
+        font-family: Arial, Helvetica, sans-serif;
+        text-transform: uppercase;
+    }
+
+    .btn:hover .btn-slide-show-text1 {
+        margin-left: 65px;
+    }
+
+    .btn-rect-to-round {
+        height: 55px;
+        width: 200px;
+        font-size: 16px;
+        font-weight: 600;
+        background: transparent;
+        cursor: pointer;
+        transition: 0.5s ease-in;
+    }
+
+    .btn-rect-to-round:hover {
+        border-radius: 60px;
+        color: rgb(255, 255, 255) !important;
+    }
+
+    .btn-rect-to-round--black {
+        border: 2px solid rgb(51, 51, 51);
+        color: rgb(51, 51, 51) !important;
+    }
+
+    .btn-rect-to-round--black:hover {
+        border-color: rgb(51, 51, 51);
+        background: rgb(51, 51, 51);
+    }
+</style>
 {% endblock %}
