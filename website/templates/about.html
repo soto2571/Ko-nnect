@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Header Section -->
+    <header class="bg-white shadow-md p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Ko-nnect Logo"
+            class="h-10" />
+        </h1>
+        <nav>
+          <ul class="flex space-x-6">
+            <li>
+              <a href="#features" class="hover:text-blue-600">Features</a>
+            </li>
+            <li><a href="#about" class="hover:text-blue-600">About</a></li>
+            <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
+            <li>
+              <a href="#cta" class="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                >Get Started</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- About -->
+
+    <div>
+        <p>
+           Ko-nnect is a platform that connects businesses with their customers. We offer the best services to help your business succeed. Join us today!
+        </p>
+    </div>
+
+    <!-- Call-to-Action Section -->
+    <section class="bg-green-500 text-white py-20 text-center" id="cta">
+      <div class="container mx-auto">
+        <h4 class="text-3xl font-bold mb-4">Ready to Get Started?</h4>
+        <p class="text-lg mb-8">Sign up now and enjoy our services.</p>
+        <a
+          href="#contact"
+          class="bg-white text-green-500 font-bold px-8 py-4 rounded-lg"
+          >Join Now</a
+        >
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 Ko-nnect. All rights reserved.</p>
+        <nav class="mt-4">
+          <ul class="flex justify-center space-x-6">
+            <li><a href="#features" class="hover:underline">Features</a></li>
+            <li><a href="#about" class="hover:underline">About</a></li>
+            <li><a href="#contact" class="hover:underline">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
