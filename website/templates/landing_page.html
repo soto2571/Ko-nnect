@@ -11,55 +11,116 @@
     <header class="bg-white shadow-md p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-2xl font-bold">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Ko-nnect Logo" class="h-10">
+                <img src="{{ url_for('static', filename='images/Ko-nnect.png') }}" alt="Ko-nnect Logo" class="h-10">
             </h1>
             <nav>
                 <ul class="flex space-x-6">
-                    <li><a href="#features" class="hover:text-blue-600">Features</a></li>
-                    <li><a href="#about" class="hover:text-blue-600">About</a></li>
-                    <li><a href="#contact" class="hover:text-blue-600">Contact</a></li>
-                    <li><a href="#cta" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Get Started</a></li>
+                    <li><a href="#features" class="hover:text-red-600">Features</a></li>
+                    <li><a href="#about" class="hover:text-red-600">About</a></li>
+                    <li><a href="#contact" class="hover:text-red-600">Contact</a></li>
+                    <li><a href="{{ url_for('auth.login') }}" 
+                        class="bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold px-6 py-2 rounded-md shadow-md hover:shadow-lg hover:from-red-600 hover:to-red-800 hover:border-white-700 border-transparent border transition duration-200 ease-in-out transform hover:scale-105">
+                         Log In
+                     </a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="bg-blue-500 text-white py-20 text-center" id="hero">
-        <div class="container mx-auto">
-            <h2 class="text-4xl font-bold mb-4">Welcome to Ko-nnect</h2>
-            <p class="text-lg mb-8">We offer the best services to help your business succeed. Join us today!</p>
-            <a href="#cta" class="bg-white text-blue-500 font-bold px-8 py-4 rounded-lg">Start Now</a>
-        </div>
-    </section>
+    <section class="home text-white text-center" id="hero" 
+         style="background-image: url('{{ url_for('static', filename='images/back.png') }}'); 
+                min-height: 50vh; 
+                width: 100%; 
+                background-repeat: no-repeat; 
+                background-size: cover; 
+                background-position: center; 
+                display: grid;
+                margin-bottom: 40px;
+                place-items: center;">
+</section>
+
+<div class="text-center">
+    <a href="{{ url_for('auth.login') }}" 
+       class="bg-gradient-to-r from-red-500 to-red-700 text-white font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:from-red-600 hover:to-red-800 transform hover:scale-105 transition duration-300 ease-in-out">
+        Start Now
+    </a>
+</div>
 
     <!-- Features Section -->
     <section class="py-20" id="features">
         <div class="container mx-auto text-center">
             <h3 class="text-3xl font-bold mb-6">Our Features!</h3>
+            <p class="text-lg text-gray-700 mb-8">Made to Perfection for Employees and Admins</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h4 class="text-xl font-semibold mb-2">Feature 1</h4>
-                    <p class="text-gray-600">Description of the first feature.</p>
+                
+                <!-- Feature Box with Hover Effect -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-800">
+                    <h4 class="text-xl font-semibold mb-2">Effortless Schedule Creation</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        Admins and managers can easily create and assign schedules for employees, minimizing scheduling conflicts and enhancing team communication.
+                    </p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h4 class="text-xl font-semibold mb-2">Feature 2</h4>
-                    <p class="text-gray-600">Description of the second feature.</p>
+    
+                <!-- Repeat for other boxes -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-300">
+                    <h4 class="text-xl font-semibold mb-2">Real-Time Schedule Access</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        Employees can log in from their phone or computer to view their schedules instantly, ensuring they stay informed about upcoming shifts and avoid miscommunication.
+                    </p>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h4 class="text-xl font-semibold mb-2">Feature 3</h4>
-                    <p class="text-gray-600">Description of the third feature.</p>
+    
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-300">
+                    <h4 class="text-xl font-semibold mb-2">Holiday and Shift Calendar</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        View a calendar of shifts up to 3 weeks in advance, including public holidays in Puerto Rico. Stay informed about workdays and upcoming days off.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section 2-->
+    <section class="py-20" id="features">
+        <div class="container mx-auto text-center">
+    
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1: Customizable Employee Access -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-300">
+                    <h4 class="text-xl font-semibold mb-2">Customizable Employee Access</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        Admins create unique credentials for each employee, allowing them to securely access their schedules, view shift details, and receive real-time updates.
+                    </p>
+                </div>
+    
+                <!-- Feature 2: Two-Week Schedule View -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-300">
+                    <h4 class="text-xl font-semibold mb-2">Two-Week Schedule View</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        Employees can scroll through a list of their current and upcoming shifts over the next 14 days, providing a convenient alternative to the calendar view.
+                    </p>
+                </div>
+    
+                <!-- Feature 3: Admin Dashboard -->
+                <div class="bg-white p-6 rounded-lg shadow-lg hover:bg-red-500 hover:text-white hover:shadow-red-500 transition duration-300">
+                    <h4 class="text-xl font-semibold mb-2">Admin Dashboard</h4>
+                    <p class="text-gray-600 hover:text-white">
+                        A centralized dashboard for admins to manage employee accounts, view schedules, and ensure everything is organized in one easy-to-access location.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Call-to-Action Section -->
-    <section class="bg-green-500 text-white py-20 text-center" id="cta">
+    <section class="bg-red-500 text-white py-20 text-center" id="cta">
         <div class="container mx-auto">
             <h4 class="text-3xl font-bold mb-4">Ready to Get Started?</h4>
             <p class="text-lg mb-8">Sign up now and enjoy our services.</p>
-            <a href="#contact" class="bg-white text-green-500 font-bold px-8 py-4 rounded-lg">Join Now</a>
+            <a href="{{ url_for('auth.login') }}" 
+   class="bg-white text-red-500 font-bold px-8 py-4 rounded-lg border-2 border-white hover:bg-gray-100 hover:text-red-600 shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105">
+    Join Now
+</a>
         </div>
     </section>
 
