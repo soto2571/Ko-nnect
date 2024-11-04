@@ -20,7 +20,7 @@
 </section>
 
 <div class="total-hours" id="schedule">
-    <h3>Total Hours This Week: {{ total_hours_worked }} hours</h3>
+    <h3>Total Hours This Week: {{ '%.1f' | format(total_hours_worked) }} hours</h3>
 </div>
 
 <div class="calendar-container">
@@ -108,6 +108,10 @@
 html {
     scroll-behavior: smooth;
 }
+.user-name {
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Ensure long words break properly */
+}
 
 .total-hours{
     color: #fff;
@@ -134,6 +138,19 @@ html {
     margin-bottom: 10px;
     color: #ffffff;
     margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .calendar-grid {
+        grid-template-columns: repeat(4, 1fr); /* Show 4 columns on smaller screens */
+    }
+    .calendar-day {
+        font-size: 0.8rem; /* Smaller font size */
+        padding: 5px; /* Smaller padding */
+    }
+    .day-date {
+        font-size: 1rem; /* Adjust the date size */
+    }
 }
 
 .legend-item {
@@ -397,6 +414,21 @@ html {
   .slider-wrapper .swiper-slide-button {
     display: none;
   }
+}
+
+@media (max-width: 768px) {
+    .home-text h1 {
+        font-size: 2.5rem; /* Reduce heading size */
+    }
+    .home-text p {
+        font-size: 0.9rem; /* Reduce paragraph text size */
+    }
+    .total-hours {
+        font-size: 1rem; /* Smaller font for mobile */
+    }
+    .calendar-title {
+        font-size: 2rem; /* Adjust calendar title */
+    }
 }
 </style>
 
