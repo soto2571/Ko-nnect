@@ -1,152 +1,464 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block title %}Admin-Panel{% endblock %} {% block
+content %}
 
-{% block title %}Admin-Panel{% endblock %}
+<div class="content">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    <!-- Set Business Hours Card -->
+    <div
+      class="col-span-1 bg-white backdrop-blur-lg p-6 opacity-90 shadow-md rounded-lg w-full md:w-75 h-auto">
+      <form method="POST" action="{{ url_for('admin.set_business_hours') }}">
+        <h3 class="text-xl font-bold mb-4" align="center">
+          Set Business Hours and Days
+        </h3>
 
-{% block content %}
-        
-<div class="content p-4">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <!-- Set Business Hours Card -->
-        <div class="bg-white backdrop-blur-lg p-6 shadow-md rounded-lg opacity-90">
-            <form method="POST" action="{{ url_for('admin.set_business_hours') }}">
-                <h3 class="text-xl font-bold mb-4 text-center">Set Business Hours and Days</h3>
-
-                <!-- Opening Time -->
-                <div class="form-group mb-4">
-                    <label for="opening_time" class="block text-sm font-medium text-gray-700">Opening Time</label>
-                    <input type="time" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="opening_time" name="opening_time" required>
-                </div>
-
-                <!-- Closing Time -->
-                <div class="form-group mb-4">
-                    <label for="closing_time" class="block text-sm font-medium text-gray-700">Closing Time</label>
-                    <input type="time" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="closing_time" name="closing_time" required>
-                </div>
-
-                <!-- Business Days -->
-                <div class="form-group mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Business Days:</label>
-                    {% for day, name in [(0, 'Monday'), (1, 'Tuesday'), (2, 'Wednesday'), (3, 'Thursday'), (4, 'Friday'), (5, 'Saturday'), (6, 'Sunday')] %}
-                        <label><input type="checkbox" name="business_days" value="{{ day }}"> {{ name }}</label><br>
-                    {% endfor %}
-                </div>
-
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Submit</button>
-            </form>
+        <!-- Opening Time -->
+        <div class="form-group mb-4">
+          <label
+            for="opening_time"
+            class="block text-sm font-medium text-gray-700"
+            >Opening Time</label
+          >
+          <input
+            type="time"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="opening_time"
+            name="opening_time"
+            required />
         </div>
 
-        <!-- Create Schedule Card -->
-        <div class="bg-white backdrop-blur-lg p-6 shadow-md rounded-lg opacity-90 h-auto">
-            <form method="POST" action="{{ url_for('admin.create_schedule') }}">
-                <h3 class="text-xl font-bold mb-4 text-center">Create Schedule</h3>
-
-                <div class="form-group mb-4">
-                    <label for="shift_start" class="block text-sm font-medium text-gray-700">Entry Hour</label>
-                    <input type="datetime-local" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="shift_start" name="shift_start" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="shift_end" class="block text-sm font-medium text-gray-700">Exit Hour</label>
-                    <input type="datetime-local" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="shift_end" name="shift_end" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="employee_id" class="block text-sm font-medium text-gray-700">Employee</label>
-                    <select class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="employee_id" name="employee_id" required>
-                        {% for employee in employees %}
-                            <option value="{{ employee.id }}">{{ employee.first_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Submit</button>
-            </form>
+        <!-- Closing Time -->
+        <div class="form-group mb-4">
+          <label
+            for="closing_time"
+            class="block text-sm font-medium text-gray-700"
+            >Closing Time</label
+          >
+          <input
+            type="time"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="closing_time"
+            name="closing_time"
+            required />
         </div>
 
-        <!-- Create New User Card -->
-        <div class="bg-white p-6 shadow-md opacity-90 rounded-lg">
-            <form method="POST" action="{{ url_for('admin.create_user') }}">
-                <h3 class="text-xl font-bold mb-4 text-center">Create New User</h3>
-
-                <div class="form-group mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                    <input type="email" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="email" name="email" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-                    <input type="text" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="first_name" name="first_name" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="password" name="password" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="password_confirm" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input type="password" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="password_confirm" name="password_confirm" required>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label for="availability" class="block text-sm font-medium text-gray-700">Availability</label>
-                    <input type="text" class="mt-1 block w-full p-2 border-gray-300 rounded-md" id="availability" name="availability">
-                </div>
-
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Submit</button>
-            </form>
+        <!-- Business Days -->
+        <div class="form-group mb-4">
+          <label class="block text-sm font-medium text-gray-700"
+            >Business Days:</label
+          >
+          <label
+            ><input type="checkbox" name="business_days" value="0" />
+            Monday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="1" />
+            Tuesday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="2" />
+            Wednesday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="3" />
+            Thursday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="4" />
+            Friday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="5" />
+            Saturday</label
+          ><br />
+          <label
+            ><input type="checkbox" name="business_days" value="6" />
+            Sunday</label
+          ><br />
         </div>
+
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Submit
+        </button>
+      </form>
     </div>
 
-    <!-- Employee List & Schedules Section -->
-    <div class="mt-8 colorText">
-        <h3 class="text-2xl font-bold text-center">Employee List & Schedules</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+    <div
+      class="col-span-1 bg-white backdrop-blur-lg p-6 opacity-90 shadow-md rounded-lg"
+      style="height: 32rem">
+      <form method="POST" action="{{ url_for('admin.create_schedule') }}">
+        <h3 class="text-xl font-bold mb-4" align="center">Create Schedule</h3>
+
+        <!-- Entry Hour -->
+        <div class="form-group mb-4">
+          <label
+            for="shift_start"
+            class="block text-sm font-medium text-gray-700"
+            >Entry Hour</label
+          >
+          <input
+            type="datetime-local"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="shift_start"
+            name="shift_start"
+            required />
+        </div>
+
+        <!-- Exit Hour -->
+        <div class="form-group mb-4">
+          <label for="shift_end" class="block text-sm font-medium text-gray-700"
+            >Exit Hour</label
+          >
+          <input
+            type="datetime-local"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="shift_end"
+            name="shift_end"
+            required />
+        </div>
+
+        <!-- Employee -->
+        <div class="form-group mb-4">
+          <label
+            for="employee_id"
+            class="block text-sm font-medium text-gray-700"
+            >Employee</label
+          >
+          <select
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="employee_id"
+            name="employee_id"
+            required>
             {% for employee in employees %}
-                <div class="bg-white p-4 shadow-md rounded-lg hover:shadow-lg transition-shadow duration-300">
-                    <h4 class="font-semibold text-xl">{{ employee.first_name }}</h4>
-                    <p><strong>Email:</strong> {{ employee.email }}</p>
-                    <p><strong>Availability:</strong> {{ employee.availability }}</p>
-
-                    <div class="schedule-boxes mt-3">
-                        {% for schedule in schedules if schedule.employee_id == employee.id %}
-                            <div class="schedule-box border p-2 rounded-md mb-2 {% if schedule not in valid_schedules %} bg-red-100 {% endif %}">
-                                <p><strong>Start:</strong> {{ schedule.shift_start.strftime('%Y-%m-%d %H:%M') }}</p>
-                                <p><strong>End:</strong> {{ schedule.shift_end.strftime('%Y-%m-%d %H:%M') }}</p>
-                                
-                                <!-- Responsive Buttons for Edit and Delete -->
-                                <div class="flex gap-2 mt-2">
-                                    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-4 rounded text-sm">
-                                        Edit
-                                    </button>
-
-                                    <form method="POST" action="{{ url_for('admin.delete_schedule', id=schedule.id) }}">
-                                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded text-sm">
-                                            Delete Schedule
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+            <option value="{{ employee.id }}">{{ employee.first_name }}</option>
             {% endfor %}
+          </select>
         </div>
+
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+          Submit
+        </button>
+      </form>
     </div>
+
+    <!-- Create New User Card -->
+    <div class="col-span-1 bg-white p-6 shadow-md opacity-90 rounded-lg">
+      <form method="POST" action="{{ url_for('admin.create_user') }}">
+        <h3 class="text-xl font-bold mb-4" align="center">Create New User</h3>
+
+        <!-- Email Address -->
+        <div class="form-group mb-4">
+          <label for="email" class="block text-sm font-medium text-gray-700"
+            >Email Address</label
+          >
+          <input
+            type="email"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+            required />
+        </div>
+
+        <!-- First Name -->
+        <div class="form-group mb-4">
+          <label
+            for="first_name"
+            class="block text-sm font-medium text-gray-700"
+            >First Name</label
+          >
+          <input
+            type="text"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="first_name"
+            name="first_name"
+            placeholder="Enter first name"
+            required />
+        </div>
+
+        <!-- Password -->
+        <div class="form-group mb-4">
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Password</label
+          >
+          <input
+            type="password"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="password"
+            name="password"
+            placeholder="Enter password"
+            required />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group mb-4">
+          <label
+            for="password_confirm"
+            class="block text-sm font-medium text-gray-700"
+            >Confirm Password</label
+          >
+          <input
+            type="password"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="password_confirm"
+            name="password_confirm"
+            placeholder="Confirm password"
+            required />
+        </div>
+
+        <!-- Availability -->
+        <div class="form-group mb-4">
+          <label
+            for="availability"
+            class="block text-sm font-medium text-gray-700"
+            >Availability</label
+          >
+          <input
+            type="text"
+            class="mt-1 block w-full p-2 border-gray-300 rounded-md"
+            id="availability"
+            name="availability"
+            placeholder="e.g., Mon-Fri, 9am-5pm" />
+        </div>
+
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Business Hours Section -->
+  <div class="colorText">
+    <div class="flex justify-center items-center">
+      <div
+        class="p-6 bg-opacity-80 shadow-md rounded-lg backdrop-blur-lg content-center border border-white border-opacity-50 shadow-white"
+        style="height: 18rem; width: 20rem">
+        <h3 class="text-xl font-bold text-center">Business Hours</h3>
+        <p class="text-center">
+          Opening Time: <strong>{{ user.opening_time }}</strong>
+        </p>
+        <p class="text-center">
+          Closing Time: <strong>{{ user.closing_time }}</strong>
+        </p>
+        <p class="text-center">
+          Business Days: {% if user.business_days %} {% set business_days =
+          user.business_days.split(',') %} {% set business_days_names = [] %} {%
+          for day in business_days %} {% set _ =
+          business_days_names.append(business_days_list[day|int]) %} {% endfor
+          %}
+          <strong>{{ ', '.join(business_days_names) }}</strong>
+          {% else %}
+          <strong>Not Set</strong>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Space between Business Hours and Employee List -->
+  <div class="mt-8">
+    <div class="colorText">
+      <h3 class="text-2xl font-bold text-center">Employee List & Schedules</h3>
+    </div>
+    <div
+      class="employee-schedule-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      {% for employee in employees %}
+      <div
+        class="employee-card bg-white p-4 shadow-md rounded-lg mb-4 hover:shadow-lg transition-shadow duration-300">
+        <h4 class="font-semibold text-xl">{{ employee.first_name }}</h4>
+        <p><strong>Email:</strong> {{ employee.email }}</p>
+        <p><strong>Availability:</strong> {{ employee.availability }}</p>
+
+        <div class="schedule-boxes mt-3">
+          {% for schedule in schedules if schedule.employee_id == employee.id %}
+          <div
+            class="schedule-box border p-2 rounded-md mb-2 {% if schedule not in valid_schedules %} bg-red-100 {% endif %}">
+            <p>
+              <strong>Start:</strong> {{ schedule.shift_start.strftime('%Y-%m-%d
+              %H:%M') }}
+            </p>
+            <p>
+              <strong>End:</strong> {{ schedule.shift_end.strftime('%Y-%m-%d
+              %H:%M') }}
+            </p>
+            <button
+              class="edit-btn btn btn-warning btn-sm mt-1"
+              data-schedule-id="{{ schedule.id }}"
+              data-shift-start="{{ schedule.shift_start.strftime('%Y-%m-%dT%H:%M') }}"
+              data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
+              Edit
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="employee-actions mt-2">
+          {% if can_create_schedule %}
+          <form
+            method="POST"
+            action="{{ url_for('admin.generate_schedule', employee_id=employee.id, duration=2) }}"
+            style="display: inline">
+            <button type="submit" class="btn btn-success btn-sm">
+              Generate 2-Week Schedule
+            </button>
+          </form>
+          {% endif %}
+
+          <form
+            method="POST"
+            action="{{ url_for('admin.delete_employee', id=employee.id) }}"
+            style="display: inline">
+            <button type="submit" class="btn btn-danger btn-sm">
+              Delete Employee
+            </button>
+          </form>
+
+          <!-- Delete Schedule Buttons -->
+          {% for schedule in schedules if schedule.employee_id == employee.id %}
+          <form
+            method="POST"
+            action="{{ url_for('admin.delete_schedule', id=schedule.id) }}"
+            style="display: inline">
+            <button type="submit" class="btn btn-warning btn-sm">
+              Delete Schedule
+            </button>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modal for Editing Schedule -->
+  <div
+    id="editScheduleModal"
+    class="fixed z-50 inset-0 flex items-center justify-center bg-black bg-opacity-50"
+    style="display: none">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto">
+      <h3 class="text-xl font-semibold mb-4">Edit Schedule</h3>
+      <form id="editScheduleForm">
+        <input type="hidden" id="schedule_id" name="schedule_id" />
+        <div class="form-group mb-4">
+          <label for="edit_shift_start" class="block font-medium"
+            >Entry Hour</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control block w-full p-2 border rounded-md"
+            id="edit_shift_start"
+            name="shift_start"
+            required />
+        </div>
+        <div class="form-group mb-4">
+          <label for="edit_shift_end" class="block font-medium"
+            >Exit Hour</label
+          >
+          <input
+            type="datetime-local"
+            class="form-control block w-full p-2 border rounded-md"
+            id="edit_shift_end"
+            name="shift_end"
+            required />
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button
+            type="submit"
+            class="btn bg-blue-500 text-white px-4 py-2 rounded-md">
+            Save Changes
+          </button>
+          <button
+            type="button"
+            class="btn bg-gray-300 px-4 py-2 rounded-md"
+            onclick="document.getElementById('editScheduleModal').style.display='none'">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-<!-- Add Tailwind-based Custom CSS for Mobile Optimization -->
+<!-- Include CSS for better presentation -->
 <style>
-    .content {
-        padding: 1rem;
-    }
-    
-    .colorText {
-        color: white;
-    }
+  body {
+    position: relative; /* Enable positioning for absolute elements */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Change font if needed */
+  }
 
-    .schedule-box {
-        background-color: #f9f9f9;
-    }
+  .background-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100;
+    height: auto;
+    z-index: -1; /* Make sure it stays behind other elements */
+  }
+
+  .content {
+    position: relative; /* Keep content on top of background */
+    z-index: 2; /* Above the overlay */
+    padding: 0px; /* Some padding */
+  }
+
+  .employee-schedule-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .employee-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+
+  .schedule-boxes {
+    margin-top: 10px;
+  }
+
+  .schedule-box {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .employee-actions {
+    margin-top: 15px;
+  }
+
+  #editScheduleModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+  }
+  .colorText {
+    color: white;
+  }
 </style>
 {% endblock %}
