@@ -293,6 +293,16 @@ content %}
               data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
               Edit
             </button>
+            {% for schedule in schedules if schedule.employee_id == employee.id
+            %}
+            <form
+              method="POST"
+              action="{{ url_for('admin.delete_schedule', id=schedule.id) }}"
+              style="display: inline">
+              <button type="submit" class="btn btn-warning btn-sm">
+                Delete Schedule
+              </button>
+            </form>
           </div>
           {% endfor %}
         </div>
@@ -459,6 +469,10 @@ content %}
   }
   .colorText {
     color: white;
+  }
+
+  .btn btn-danger btn-sm {
+    margin: 8px;
   }
 </style>
 {% endblock %}
