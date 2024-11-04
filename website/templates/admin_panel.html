@@ -275,37 +275,35 @@ content %}
         <p><strong>Availability:</strong> {{ employee.availability }}</p>
 
         <div class="schedule-boxes mt-3">
-          {% for schedule in schedules if schedule.employee_id == employee.id %}
-          <div
-            class="schedule-box border p-2 rounded-md mb-2 {% if schedule not in valid_schedules %} bg-red-100 {% endif %}">
-            <p>
-              <strong>Start:</strong> {{ schedule.shift_start.strftime('%Y-%m-%d
-              %H:%M') }}
-            </p>
-            <p>
-              <strong>End:</strong> {{ schedule.shift_end.strftime('%Y-%m-%d
-              %H:%M') }}
-            </p>
-            <button
-              class="edit-btn btn btn-warning btn-sm mt-1"
-              data-schedule-id="{{ schedule.id }}"
-              data-shift-start="{{ schedule.shift_start.strftime('%Y-%m-%dT%H:%M') }}"
-              data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
-              Edit
-            </button>
-    
-          <form
-            method="POST"
-            action="{{ url_for('admin.delete_schedule', id=schedule.id) }}"
-            style="display: inline">
-            <button type="submit" class="btn btn-warning btn-sm">
-              Delete Schedule
-            </button>
-          </form>
-         
+            {% for schedule in schedules if schedule.employee_id == employee.id %}
+            <div
+              class="schedule-box border p-2 rounded-md mb-2 {% if schedule not in valid_schedules %} bg-red-100 {% endif %}">
+              
+              <p>
+                <strong>Schedule:</strong>
+                {{ schedule.shift_start.strftime('%B %d, %Y %I:%M%p') }} - 
+                {{ schedule.shift_end.strftime('%I:%M%p') }}
+              </p>
+              
+              <button
+                class="edit-btn btn btn-warning btn-sm mt-1"
+                data-schedule-id="{{ schedule.id }}"
+                data-shift-start="{{ schedule.shift_start.strftime('%Y-%m-%dT%H:%M') }}"
+                data-shift-end="{{ schedule.shift_end.strftime('%Y-%m-%dT%H:%M') }}">
+                Edit
+              </button>
+          
+              <form
+                method="POST"
+                action="{{ url_for('admin.delete_schedule', id=schedule.id) }}"
+                style="display: inline">
+                <button type="submit" class="btn btn-danger btn-sm">
+                  Delete Schedule
+                </button>
+              </form>
+            </div>
+            {% endfor %}
           </div>
-          {% endfor %}
-        </div>
 
         <div class="employee-actions mt-2">
 
