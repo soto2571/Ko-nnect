@@ -1,102 +1,112 @@
 # ko-nnect
 
-ko-nnect es una aplicación web diseñada para facilitar la gestión de horarios y turnos de empleados. Con una interfaz intuitiva y características avanzadas, ko-nnect asegura que tanto empleados como administradores puedan gestionar y visualizar horarios de manera eficiente.
+`ko-nnect` is a web application designed to streamline employee shift and schedule management. With an intuitive interface and advanced features, it enables both employees and administrators to manage and view schedules effectively.
 
-## Tabla de Contenidos
+## Table of Contents
 
 - [ko-nnect](#ko-nnect)
-  - [Tabla de Contenidos](#tabla-de-contenidos)
-  - [Instalación](#instalación)
-  - [Uso](#uso)
-  - [Características](#características)
-  - [Contribución](#contribución)
-  - [Licencia](#licencia)
-  - [Contacto](#contacto)
-    - [Equipo](#equipo)
-  - [Historia y Agradecimientos](#historia-y-agradecimientos)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Features](#features)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
+    - [TEAM](#team)
+  - [History and Acknowledgments](#history-and-acknowledgments)
 
-## Instalación
+## Installation
 
-Sigue estos pasos para configurar el entorno de desarrollo de ko-nnect:
+Follow these steps to set up the development environment for ko-nnect:
 
-1. Clona el repositorio:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/tu-usuario/ko-nnect.git
    cd ko-nnect
    ```
 
-2. Crea y activa un entorno virtual:
+2. Create and activate a virtual environment:
 
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. Instala las dependencias:
+3. Install the dependencies:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Configura las variables de entorno:
-   Crea un archivo `.env` en la raíz del proyecto y añade las variables necesarias.
+4. Configure environment variables: Create a `.env` file in the project’s root directory and add the required variables.
 
-5. Realiza las migraciones de la base de datos:
+5. Perform database migrations:
 
    ```bash
    flask db upgrade
    ```
 
-6. Inicia la aplicación:
+6. Start the application:
    ```bash
    flask run
    ```
 
-## Uso
+## Usage
 
-Para iniciar la aplicación, asegúrate de que el entorno virtual esté activado y ejecuta:
+To start the application, ensure the virtual environment is active and run:
 
 ```bash
 flask run
 ```
 
-## Características
+## Features
 
-- **Inicio de Sesión de Empleados:** Los empleados pueden iniciar sesión desde su teléfono o computadora para ver sus horarios al instante.
-- **Calendario de Turnos y Festivos:** Visualiza un calendario de turnos hasta 3 semanas en adelante, incluyendo festivos en Puerto Rico.
-- **Acceso Personalizado para Empleados:** Los administradores crean credenciales únicas para cada empleado, permitiéndoles acceder de manera segura a sus horarios.
-- **Vista de Horarios de Dos Semanas:** Los empleados pueden ver una lista de sus turnos actuales y próximos durante los próximos 14 días.
-- **Panel de Administración:** Un panel centralizado para que los administradores gestionen cuentas de empleados y horarios.
+- **Employee Login:** Employees can log in from their devices to instantly view their schedules.
+- **Shift and Holiday Calendar:** View a shift calendar up to three weeks in advance, including public holidays in Puerto Rico.
+- **Personalized Employee Access:** Administrators create unique credentials for each employee, enabling secure access to their schedules.
+- **Two-Week Schedule View:** Employees can view a list of their current and upcoming shifts for the next 14 days.
+- **Admin Dashboard:** A centralized panel for administrators to manage employee accounts and schedules.
 
-## Contribución
+## Contributing
 
-Si deseas contribuir a ko-nnect, sigue estos pasos:
+If you’d like to contribute to `ko-nnect`, follow these steps:
 
-1.  Haz un fork del repositorio.
-2.  Crea una nueva rama (git checkout -b feature/nueva-caracteristica).
-3.  Realiza tus cambios y haz commit (git commit -am 'Añadir nueva característica').
-4.  Sube tus cambios (git push origin feature/nueva-caracteristica).
-5.  Abre un Pull Request.
+1.  Fork the repository
+2.  Create a new branch:
 
-## Licencia
+        git checkout -b feature/new-feature
 
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+3.  Make your changes and commit them:
 
-## Contacto
+        git commit -am 'Add new feature'
 
-Para más información, puedes contactaral equipo.
+4.  Push your changes:
 
-### Equipo
+        git push origin feature/new-feature
+
+5.  Open a Pull Request.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
+
+## Contact
+
+For more information, feel free to reach out to the team.
+
+### TEAM
 
 - [Sebastian Soto](https://github.com/soto2571)
 - [Jose Mendez](https://github.com/jjmendezrodriguez)
 - [Abdiel Rodriguez](https://github.com/Abdieljrg)
 
-## Historia y Agradecimientos
+## History and Acknowledgments
 
-Trabajar en ko-nnect ha sido una experiencia increíblemente gratificante para todos nosotros. Desde el inicio del proyecto, hemos aprendido y crecido tanto a nivel profesional como personal. La colaboración y el esfuerzo conjunto nos han permitido superar desafíos y alcanzar nuestros objetivos.
+Working on ko-nnect has been an incredibly rewarding experience for the entire team. From the beginning of the project, we have learned and grown both professionally and personally. Through collaboration and teamwork, we have overcome challenges and achieved our goals.
 
-Queremos expresar nuestro más sincero agradecimiento a Holberton por brindarnos la educación y las herramientas necesarias para llevar a cabo este proyecto. Su apoyo y guía han sido fundamentales en nuestro desarrollo como desarrolladores de software.
+We would like to extend our heartfelt thanks to Holberton for providing the education and tools necessary to complete this project. Their support and guidance have been instrumental in our development as software developers.
+
+**_Thank you, Holberton!_**
 
 **_¡Gracias, Holberton!_**
