@@ -9,7 +9,6 @@ ko-nnect es una aplicación web diseñada para facilitar la gestión de horarios
   - [Instalación](#instalación)
   - [Uso](#uso)
   - [Características](#características)
-  - [Estructura del Proyecto](#estructura-del-proyecto)
   - [Contribución](#contribución)
   - [Licencia](#licencia)
   - [Contacto](#contacto)
@@ -69,23 +68,6 @@ flask run
 - **Acceso Personalizado para Empleados:** Los administradores crean credenciales únicas para cada empleado, permitiéndoles acceder de manera segura a sus horarios.
 - **Vista de Horarios de Dos Semanas:** Los empleados pueden ver una lista de sus turnos actuales y próximos durante los próximos 14 días.
 - **Panel de Administración:** Un panel centralizado para que los administradores gestionen cuentas de empleados y horarios.
-
-## Estructura del Proyecto
-
-    ko-nnect/
-    ├── app/
-    │ ├── templates/
-    │ ├── static/
-    │ ├── **init**.py
-    │ ├── models.py
-    │ ├── routes.py
-    │ └── ...
-    ├── migrations/
-    ├── venv/
-    ├── .env
-    ├── [requirements.txt](http://_vscodecontentref_/1)
-    ├── config.py
-    └── run.py
 
 ## Contribución
 
