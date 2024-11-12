@@ -246,16 +246,18 @@ content %}
           Closing Time: <strong>{{ user.closing_time }}</strong>
         </p>
         <p class="text-center">
-          Business Days: {% if user.business_days %} {% set business_days =
-          user.business_days.split(',') %} {% set business_days_names = [] %} {%
-          for day in business_days %} {% set _ =
-          business_days_names.append(business_days_list[day|int]) %} {% endfor
-          %}
-          <strong>{{ ', '.join(business_days_names) }}</strong>
-          {% else %}
-          <strong>Not Set</strong>
-          {% endif %}
-        </p>
+            Business Days: 
+            {% if user.business_days %}
+              {% set business_days = user.business_days.split(',') %}
+              {% set business_days_names = [] %}
+              {% for day in business_days %}
+                {% set _ = business_days_names.append(business_days_list[day|int]) %}
+              {% endfor %}
+              <strong>{{ ', '.join(business_days_names) }}</strong>
+            {% else %}
+              <strong>Not Set</strong>
+            {% endif %}
+          </p>
       </div>
     </div>
   </div>
